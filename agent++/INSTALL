@@ -1,0 +1,69 @@
+INSTALL
+=======
+
+The following installation instructions only apply if you do not want
+to use autoconf. For autoconf usage, see the file READMNE.autoconf.
+
+INSTALL without "autoconf"
+--------------------------
+
+It is recommended to unpack all source code packages needed for AGENT++
+wihtin the same directory. 
+Assuming that you have downloaded the source code packages for libDES, 
+SNMP++v3.x, and AGENT++ from http://www.agentpp.com and stored the
+files in a directory named "myproj" the following commands will setup your
+build environment:
+
+gtar xzvf libdes-l-4.01.tar.gz
+gtar xzvf snmp++v3.2.tar.gz
+gtar xzvf agent++v3.5.4.tar.gz
+
+cd libdes
+make cc
+cd ..
+
+cd snmp++/src
+make -f Makefile.<platform>
+cd ../..
+
+cd agent++/src
+make -f Makefile.<platform>
+cd ../..
+
+Please note: 
+1. You need a GNU make (gmake) to build AGENT++.
+2. The Makefiles of AGENT++ and AgentX++ build static and shared 
+libaries by default. You will have to remove the shared libs by
+
+rm agentX++/lib/libagentx++.so
+rm agent++/lib/libagent++.so
+
+in order to build a statically linked executable. Otherwise, you will
+have to set the environment variable LD_LIBRARY_PATH (Linux, Solaris) 
+or SHLIB_PATH (HPUX 11) accordingly. 
+
+To build one of the example agents:
+
+cd agent++/examples/<example_dir>/src
+make -f Makefile.<platform>
+
+AGENPRO TEMPLATES
+=================
+
+To setup your own build environment for an AgenPro generated (simulation)
+agent:
+
+1. Generate the source files into the agenpro/agent/src directory and the header
+files into the agenpro/agent/include directory using AgenPro. 
+
+2. Build the agent. Run in the agent++ directory:
+./configure --with-agenpro
+make
+
+To enable persistent storage for an agent, create an empty folder
+"config" in the "src" directory of your agent, for example:
+
+mkdir agent++/agenpro/agent/src/config
+
+
+

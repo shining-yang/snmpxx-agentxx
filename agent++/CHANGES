@@ -1,0 +1,1884 @@
+Version 4.0.4: CHANGES since Version 4.0.3
+==========================================
+
+* Fixed: Memory leak in UsmUserTable::deleteRows().
+* Fixed: SnmpTagValue could not be set to an empty string.
+* Improved: Uncommented unused log names.
+* Fixed: Removed deprecated "pragma interface" and "pragma 
+  implementation" pragmas of GCC before 2.7.2.
+* Improved: Introduced optional upper limit for GETBULK requests
+  that can be globally set: AGENTPP_MAX_GETBULK_REPETITIONS.
+
+Version 4.0.3: CHANGES since Version 4.0.2
+==========================================
+
+* Fixed: Synchronized::wait with timeout fails sometimes with errno 22
+  (this error occurred more often on systems without clock_gettime).
+
+
+Version 4.0.2: CHANGES since Version 4.0.1
+==========================================
+
+* Fixed: Makefile.am of atm_mib and cmd_exe examples to include
+  their .h files in distribution.
+* Improved: API documentation (e.g., warning in Mib::init() regarding
+  ThreadPool initialization and stack size).
+* Fixed: Compiler issues found in some MIB implementations by the
+  llvm clang compiler.
+
+Version 4.0.1: CHANGES since Version 4.0.0
+==========================================
+
+* Fixed: [APP-25] make distcheck.
+* Fixed: [APP-26] agenpro template support for AgenPro 3.1.4.
+
+Version 4.0: CHANGES since Version 3.5.31
+=========================================
+
+* Released under the Apache 2 Open Source license.
+* Added: Autoconf support.
+* Fixed: bool vs. int issues and WIN32 compilation problems.
+* Fixed: Compilation error regarding pthread_t = long on 64bit mac os.
+* Fixed: [APP-19] Fixed regression regarding thread timeout waits.
+* Fixed: [APP-23] Fixed race condition for an endless loop in 
+  TaskManager.run().
+* Improved: Added definition of MAXUINT32 in agent++.h to it defined 
+  for NO_SNMPv3 too.
+* Fixed: Changed send_snmp_request to accept address as const parameter.
+* Fixed: SocketAddrType usage for _NO_SNMPv3.
+* Fixed [APP-19]: Added clock_gettime usage in Synchronized wait with 
+  improved timeout computation.
+* Fixed [APP-19]: Fixed overflow in clock difference for sysUpTime.
+* Fixed [APP-19]: Improved robustness against clock changes by usage 
+  of clock_gettime(CLOCK_MONOTONIC,..).
+* Fixed [APP-17]: Performance optimization: MibEntry->find_succ was called 
+  more often than needed when processing get_next and get_bulk PDUs.
+* Improved [APP-22]: Sychronized::trylock behavior to support detection of 
+  recursive locking. This feature is needed by AgentX++ to support recursive 
+  Posix Thread locks.
+* Fixed [APP-12]: Removed incorrect _NOTIFICATION_LOG_BY_SENT_NOTIFICATIONS 
+  compiler switch.
+* Fixed [APP-12]: Creation of nlmConfigLogEntry entries.
+* Fixed [APP-12]: nlmConfigRowStatus type; Notification events are logged only
+  once by default.
+* Fixed compilation with g++ 4.7.1 under Opensuse 12.2
+* Fixed seg. fault in static_table example.
+* Fixed: Cast from ‘Agentpp::Synchronized*’ to ‘int’ loses precision.
+* Fixed: Only use undo value in unset() function if it is not null.
+* Fixed [APP-16]: Mib group not removed from non-default context with 
+  Mib::remove.
+* Fixed [APP-10]: In call of passes_filter, the profile name was exchanged 
+  with the notification id resulting in incorrect filtering.
+* Fixed: Compiler warnings regarding empty array creating in List.h Array.
+* Fixed: Two MibTable constructors used unsigned int instead of int
+* Improved: Made init_lock_queue and delete_lock_queue static.
+* Fxed: Prevent memory leaks when calling snmp_community_mib::add_public() 
+  twice or if the rows where loaded from file before.
+* Improved: Allow to set security level for add_v3_trap_destination() function.
+* Fixed: Added missing namespaces in notification_log_mib.h.
+* Improved: Use const char* for static strings.
+* Added: RequestID in request.h to facilitate 
+  background instrumentation processing. The
+  RequestID can be used by a table to associate
+  an operation (request_id) with an Oid.
+* Improved: Replaced all usages of boolean with bool. This fixes some
+  inconsitencies, where boolean was used as int.
+* Fixed: Two MibTable constructors used unsigned int instead of int
+  (found from Stephen Agate)
+* Improved: Added some notes about memory handling; Moved some initializations 
+  out of synchronized area.
+* Improved: Allow to set system contact, system name and system location in 
+  sysGroup constructor.
+* Improved: atm_mib example: Delete objects before exit.
+* Improved: Added VacmContextTable::clear() method.
+
+
+Version 3.5.31: CHANGES since Version 3.5.30
+============================================
+
+* Improved: Added install rules for Makefile (like in snmp++); Made
+  lock_mib() and unlock_mib() inline functions (Dominik Vogt)
+* Fixed: It was possible to add the same Mibentry twice to a MibGroup and
+  a MibGroup twice to a Mib. This resulted in memory leaks. (found from
+  Dominik Vogt) 
+* Fixed: When receiving a GETBULK request, the proxy forwarder only sent
+  GETNEXT requests to the targets. Now it only uses GETNEXT for SNMPv1
+  targets.
+* Improved: VACM classes: Added missing const to member functions. So
+  in and out parameters can be distinguished. Include vacm.h if your
+  application fails to compile.
+* Improved: UsmUserTable interface to add / delete rows.
+
+Version 3.5.30: CHANGES since Version 3.5.29
+============================================
+
+* Fixed: Linker problems on MacOS X 10.5.6
+* Fixed: Possible deadlock in Mib::remove(); Possible
+  memory leak in request class; Possible null pointer
+  dereference in DateAndTime (found from Abil George).
+* Fixed: Key change objects in UsmUserTable could not
+  be initialized when loading from persistent storage
+  (Alex Agranov)
+
+Version 3.5.29: CHANGES since Version 3.5.28b
+=============================================
+
+* Fixed: USM key change operations with keys longer
+  than 16 bytes (needs SNMP++v3.2.23).
+* Fixed: Oidx::operator+=(IpAddress& ip) now accepts IPv6
+  addresses even if not compiled with SNMP_PP_IPv6.
+* Fixed: snmpRowStatus no longer uses unsigned value 
+  (uint32) internally although its syntax is Integer32
+  (otherwise incompatible with SNMP++v3.2.23).
+* Improved: Value conversion status is now checked for
+  many AGENT++ internal value_ok methods.
+
+Version 3.5.28b: CHANGES since Version 3.5.27a
+==============================================
+
+* Fixed: No response on authorizationError on a SNMPv1
+  request was returned. Now noSuchName error status
+  will be returned.
+
+* Fixed: Possible memory leaks in SnmpRequest::gettable(),
+  Vbx::from_asn1() and MibLeaf::deserialize().
+  (Found from Jungsu Byun)
+
+* Fixed: Removed lots of compiler warnings (-Wcast-qual, 
+  -Wshadow), unused code, and other things (Jeremy Nimmer)
+* Fixed: NotificationOriginator::add_vX_trap_destination()
+  functions now require additional arguments. So it is now
+  allowed to call them multiple times.
+* Fixed: Compilation problem in v3_mib.cpp with VC++ 6.0.
+* Fixed: Compilation problem when using namespaces.
+* Fixed: Compilation problem in request.cpp caused
+  by #ifdef within macro.
+
+Version 3.5.27a: CHANGES since Version 3.5.26
+=============================================
+
+* Fixed: Compilation problems with _NO_SNMPv3.
+* Fixed: SET request response with error status
+  != 0 did contain null values instead the 
+  original values from the request.
+
+* Changed: Use socket type from SNMP++v3.2.21.
+* Fixed: Removed WIN32 specific code from
+  notification_log_mib.cpp.
+
+Version 3.5.26: CHANGES since Version 3.5.25
+============================================
+
+* Changed: Changes according to variable PDU
+  length introduced in SNMP++v3.2.20.
+
+Version 3.5.25: CHANGES since Version 3.5.24
+============================================
+
+* Improved: UsmUserTable::addNewRow() now returns a
+  pointer to the added row.
+* Fixed: Key change of SHA users.
+
+Version 3.5.24: CHANGES since Version 3.5.23a
+=============================================
+
+* Fixed: Missing includes.
+* Fixed: Compilation of request.h without threads.
+* Changed: Renamed struct VacmClassPointers to
+  Vacm::ClassPointers.
+* Improved: Added missing addNewRow() function
+  and some documentation to class UsmUserTable.
+* Fixed: Missing "b" option for fopen params in
+  mib_entry.cpp.
+
+Version 3.5.23a: CHANGES since Version 3.5.22c
+==============================================
+
+* Fixed: VacmTreeFamilyTable index did not allow
+  subtree sub-indexes > 255.
+
+* Changed: Requires SNMP++v3.2.17 or later due
+  to logging changes (see below).
+* Changed: Moved log classes into snmp++, so #include
+  in your code has to be changed to <snmp_pp/log.h>.
+* Improved: Requests are no longer deleted within
+  the RequestList::answer method rather than they
+  are deleted in the new Mib::delete_request method
+  which is called at the end of the Mib::finalize.
+  This approach provides means to run necessary
+  cleanup of a request (i.e. unlocking it) by
+  Mib sub-classes like MasterAgentXMib.
+* Changed: Request is a Synchronized object now.
+
+
+Version 3.5.22c: CHANGES since Version 3.5.21
+=============================================
+
+* Fixed: DLL compilation of MibConfigFormat.
+* Fixed: Set pointers snmp, vacm and v3mp to NULL
+  in constructor of RequestList.
+
+* Fixed: Compilation with #_NO_THREADS defined.
+
+* Fixed: Error status for SET and GET requests
+  which are "notInView" a noAccess error is 
+  now returned instead authorizationError.
+* Added: Example code in ATM example which shows
+  how to add community-to-security-name mapping
+  for the "public" community.
+
+* Fixed: The noSuchInstance error is now also
+  returned on a GET request on a leaf wiht a
+  wrong instance identifier (e.g. .1 or .1.2
+  instead of .0).
+* Fixed: Setting agentppCfgSecSrcAddrValidation
+  to 2 did not disable source address validation.
+* Added: MibTable::reinit() to support 
+  reregistration of indexes and rows of shared
+  tables when a subagent reconnects to a master.
+  Without AgentX++ this new method is not used.
+* Added: MibEntry::reset() to support data 
+  reinitializazion during runtime.
+* Added: Mib::save(..) and Mib::load(..) to
+  support persistent storage of data using 
+  different formats.
+* Added: Mib::add_config_format(..) that allows
+  to add future or custom configuration file
+  formats.
+* Fixed: Calling VacmViewTreeFamilyTable::clear()
+  did not refresh the internal cache, which could
+  have caused seg.fault later.
+* Added: agentppCfgStorageTable implementation
+  which allows to store the configuration at 
+  runtime to any location. To add the new table
+  to your agent, use the new agentpp_config_mib
+  construct with the Mib pointer parameter.
+* Fixed: MibTable does no longer store volatile
+  columns persistently. 
+* Fixed: StorageType allowed to modify permanent
+  and read-only storage types.
+
+Version 3.5.21: CHANGES since Version 3.5.20a
+=============================================
+* Fixed: Security bug when processing SNMPv1/v2c
+  messages in a SNMPv3 enabled agent with 
+  snmp_community_mib implementation present,
+  a community could have been used although
+  there has not been defined a mapping in
+  the snmpCommunityTable if a security name 
+  equal to the community has been granted 
+  access in the VACM for the v1 or v2c security
+  model.
+* Added: SNMP++ namespace support (requires
+  SNMP++v3.2.11.
+
+Version 3.5.20a: CHANGES since Version 3.5.19
+=============================================
+* Fixed: Possible deadlock when deleting a
+  ThreadPool.
+
+* Improved: According to the clarification
+  provided by RFC 3413, section 5 (Identification
+  of Management Targets in Notification 
+  Originators), page 63, multiple notifications
+  (i.e. trap and inform) can be sent to a single
+  target triggered by a single notification
+  event [by courtesy of Dave White].
+* Improved: The MibEntry::find_succ(..) method
+  is now being called with the (optional) 
+  Request parameter.
+* Improved: MibTable now returns a noSuchInstance
+  exception syntax for columnar objects that
+  are creatable but have no default value.
+  Internally, that instance exists and can be
+  set via SNMP. GETNEXT and GETBULK requests
+  skip those uninitialized instances. 
+* Fixed: Some inconsistencies with the MibLeaf
+  validity member and the related documentation.
+
+Version 3.5.19: CHANGES since Version 3.5.18
+============================================
+* Added: Support for AIX 5 (by courtesy of
+  Anders Malmborg)
+* Fixed: Oidx::mask bug (reported by Dave White)
+  which caused notifyFilterMask to use wrong
+  byte order.
+* Improved: Synchronization of ThreadPool and
+  QueuedThreadPool internal notifications.
+
+Version 3.5.18: CHANGES since Version 3.5.17a
+=============================================
+* Added: QueuedThreadPool that asynchronously
+  executes tasks with a pool of threads.
+* Changed: The thread pool is no longer created
+  in the Mib constructor. Instead it the thread
+  pool is created in the Mib::init() method
+  if not set or created before. Thus, if you 
+  want to use a different thread pool, you can
+  virtually overwrite the Mib::init() method
+  or set the thread pool via the set_thread_pool
+  method.
+* Fixed: snmpTargetAddrTMask::prepare_set_request
+
+Version 3.5.17a: CHANGES since Version 3.5.16e
+==============================================
+* Fixed: Problem with serialization introduced
+  by the BER length encoding "optimization" in
+  SNMP++v3.2.11.
+* Improved: Moved headers into subdirecory
+  include/agent_pp.
+
+Version 3.5.16e: CHANGES since Version 3.5.15a
+==============================================
+* Fixed: Unitialized pointer in Mib::remove.
+
+* Fixed: Memory leak in snmp_notification_mib.cpp.
+* Fixed: Memory leak in proxy_forwarder.cpp.
+* Fixed: Memory leak in snmpTargetAddrExtEntry
+  ::passes_filter.
+* Removed: Obsolete Snmpx::port.
+
+* Fixed: Possible deadlock situation in WIN32
+  agent when a GET type request releases a lock
+  while a SET request acquires it.
+* Fixed: MPv2c MPv3 traps/informs were not passed
+  to the NOTIFICATION-LOG-MIB.
+* Fixed: Bug in snmp_community_mib::add_public
+* Added: StorageTable::set_storage_type()
+
+Version 3.5.15a: CHANGES since Version 3.5.14a
+==============================================
+* Fixed: MPv2c MPv3 traps/informs were not passed
+  to the NOTIFICATION-LOG-MIB.
+* Fixed: Bug in snmp_community_mib::add_public
+* Added: StorageTable::set_storage_type()
+
+* Fixed: Possible memory fault during release
+  of table locks in a multi-threaded agent in
+  Request::set_unlocked().
+
+* Changed: Changes according to SNMP++v3.2.10.
+* Improved: MibGroup no longer checks the OIDs
+  of objects added to it. This fixes problems that
+  occured occasionally when there were agents
+  generated from SMIv1 MIBs with AgenPro.
+
+Version 3.5.14a: CHANGES since Version 3.5.13a
+==============================================
+
+* Fixed: Compilation problem in agentpp_config_mib.cpp
+* Added: Sparse table test MIB implementation to 
+  agentpp_test_mib.cpp of the ATM example agent.
+
+* Changed: Mib constructor with persistency path
+  parameter.
+  The type of the parameter has been changed
+  from "const char*" to "const OctetStr&".
+  Access method and member "persistent_objects_path"
+  are no longer static! 
+* Fixed: Incorrect error check in snmpTargetAddrTMask
+  that prevent modifying the row while 
+  notInService(2).
+* Fixed: Check whether a snmpTargetAddrTable row 
+  can be set active when using createAndWait(5).
+* Added: IPv6 support for the snmpTargetAddrTable.
+  This includes support for the new Transport Domain
+  OIDs defined in the TRANSPORT_ADDRESS_MIB.
+* Added: AGENTPP_CONFIG_MIB that allows to configure
+  logging levels at runtime and source address
+  validation for SNMPv1/v2c protocols (see the ATM
+  example or just add 
+  "mib->add(new agentpp_config_mib());" to your 
+  agent).
+
+Version 3.5.13a: CHANGES since Version 3.5.12g
+==============================================
+
+* Fixed: Prefix match for context was incorrect
+  implemented, since the OctetStr::operator==
+  had been fixed in order to compare all bytes of
+  octet strings.
+
+* Fixed: An authorizationError has been returned
+  on a notInView VACM exception on GET requests
+  instead of returning noSuchObject or noSuchNam
+  (SNMPv1).
+* Fixed: In some cases there were variables 
+  returned for some subrequests although the
+  request (typically a GET request) failed because
+  of an error.
+* Fixed: Views created on runtime were not 
+  immediately effective.
+* Fixed: Setting the privacy protocol to 
+  usmNoPrivProtocol via SNMP was no longer possible
+  in v3.5.12d - v3.5.12g. 
+
+
+Version 3.5.12g: CHANGES since Version 3.5.11c
+==============================================
+
+* Improved: Examples now use the 
+  Snmp::socket_startup() on Win32 platforms.
+
+* Added: Some error checking for assignment
+  operators.
+* Fixed: usmUserTable accept all registered auth
+  and priv protocols.
+* Fixed: Compilation problem with _SNMPv3 not
+  defined in agentgen/agent/src/agent.cpp and
+  the corresponding counter part of the 
+  simulation agent template.
+
+* Fixed: Compilation problems introduced by the
+  latest fix (v3.5.12d) for request.cpp when 
+  _SNMPv3 was disabled.
+
+* Fixed: For notInTimeWindow authentication 
+  failures no authenticationFailure notification
+  will be generated by default.
+ 
+* Fixed: AuthenticationFailure notification was
+  not send on some SNMPv3 authentication 
+  failures.
+
+* Fixed: Memory leak when deserializing MibLeaf.
+* Fixed: Memory leak and inconsistent calling
+  sequence when a row was created using the
+  RowStatus TC. The cleanup_set_request 
+  (undo_set_request) method was not called 
+  for all relevant sub-requests.
+* Improved: snmpTargetAddrExtEntry::set_row
+  now uses OctetStr instead const char* which
+  allows to specify addresses containing 0.  
+* Fixed: Missing end_synch() statements in
+  snmpTargetAddrExtEntry::passes_filter().
+
+* Fixed: Compilation problem with new 
+  Mib::get_boot_counter method when _SNMPv3 not
+  defined.
+
+* Added: Mib::get_boot_counter and 
+  Mib::set_boot_counter to persistently store
+  the SNMPv3 boot counter. This is a wrapper
+  for the related SNMP++ functions.
+* Added: DateAndTime is now also compiled for
+  Win32 environment.
+* Changed: snmp_pp_ext.cpp to meet changes in
+  SNMP++v3.2.7.
+
+Version 3.5.11c: CHANGES since Version 3.5.10c
+==============================================
+
+* Fixed: Compilation problem in snmp_pp_ext.cpp
+  when SNMP_PP_IPv6 was defined.
+
+* Fixed: Incorrect use of NO_STATIC_REQUEST_LIST
+  instead of STATIC_REQUEST_LIST in mib.cpp.
+
+* Changed: v3.5.11 requires SNMP++v3.2.6a or
+  later.
+* Improved: Removing redirections in request
+  processing to RequestList (now performance).
+* Changed: Made requestList member of Mib
+  non-static by default. If you need a static
+  request list, then define STATIC_REQUEST_LIST.
+  PLEASE NOTE: AgentX++ users should upgrade to
+  v1.4.7a before upgrading AGENT++ to v3.5.11!  
+
+
+Version 3.5.10c: CHANGES since Version 3.5.9a
+=============================================
+
+* Fixed: Removed redundant check for setting 
+  non-default values in created rows from 
+  MibTable::ready.
+* Changed: Moved VC++ project files in a 
+  separate project.
+* Fixed: Array bounds check in List.h  
+  (Array::overwriteNth()). 
+
+* Improved: Socket handling in snmp_pp_ext.cpp
+
+* Fixed: Synchronized class for WIN32 platform.
+  Error codes returned by WaitForSingle objcect
+  were not handled correctly.
+
+* Fixed: Initialization of local engine ID
+  for proxy forwarder. 
+* Changed: Methods to process requests (class
+  Mib) are now public. 
+* Added: NotificationSender interface to
+  standardize sending notifications. The Mib
+  class now has a "notify" method that should
+  be used to send traps/notifications. By 
+  default, it uses a NotificationOriginator
+  (which also implements the NotificationSender
+  interfaces).
+* Added: NotificationType interface as common
+  interface for all trap/notification 
+  implementations.
+* Fixed: Opaque::get_syntax did no longer 
+  override OctetStr::get_syntax because the
+  latter was made const. As a consequence, 
+  Opaque behaved like OctetStr. For future
+  development, the OpaqueStr class of SNMP++
+  should be used.
+
+Version 3.5.9a: CHANGES since Version 3.5.8c
+============================================
+
+* Improved: LockQueue used by Request is no
+  longer static. It is allocated when needed,
+  but has to be freed manually.
+
+* Added: Methods to access the number of
+  entries and MibGroup instances.
+* Changed: request.cpp to match new 
+  Snmp::report signature in SNMP++v3.2.4.
+* Fixed: Constructors of Mib now access v3MP
+  via requestList member instead v3MP::I.  
+
+Version 3.5.8c: CHANGES since Version 3.5.8
+===========================================
+
+* Fixed: Linking problems with g++3.2 due to 
+  "extern" declaration of template 
+  instantiations.
+
+* Fixed: Segmentation fault when running
+  AgentX++ subagent without v3MP initialized
+  and _PROXY_FORWARDER defined (which is the 
+  default).
+
+* Fixed: Compilation problems without _SNMPv3
+  defined.
+* Note: New Makefiles assume that you have
+  defined _USE_LIBTOMCRYPT when a "crypt"
+  directory is present in the same folder as
+  the "snmp++" and "agent++" directories. 
+
+Version 3.5.8: CHANGES since Version 3.5.7c
+===========================================
+
+* Fixed: Compilation problems on some systems
+  with template initialization.
+* Improved: Support for table augmentation has
+  been improved. MibTable::fire_row_changed no
+  longer locks listening tables. Instead, 
+  all tables that listen for a table's row 
+  events are now locked during request
+  processing. 
+* Fixed: Could create rows for 
+  snmpTargetAddrExtEntry without creating the
+  corresponding row in snmpTargetAddrEntry.
+* Fixed: Memory leak when failing to create a
+  new row with RowStatus.
+* Fixed: GETBULK TooBig error handling.
+* Changed: Changed v3
+* Added: Support for AES encryption. It needs
+  libtomcrypt installed. It can be downloaded
+  from SNMP++v3.x download page located at 
+  http://www.agentpp.com 
+  LibTomCrypt is originally distributed from
+  http://www.iahu.ca:8080/libcrypt.html
+  The examples try to link against this package.
+  If you do not want to use it, remove 
+  "-libtomcrypt" from common.mk.
+
+
+Version 3.5.7c: CHANGES since Version 3.5.6d
+============================================
+
+* Fixed: Unfortunately, during DLL modifications
+  two important methods had been removed from
+  the Array template. These are required at
+  least by AgentX++ and have been included
+  again.
+
+* Fixed: DLL support for VC++ did not allow
+  static linking.
+* Fixed: TooBig errors are now reported 
+  correctly even for SNMPv3. In addition, 
+  GETBULK responses now have the correct
+  size in all cases.
+
+* Added: VC++.NET project files and DLL
+  support.
+
+* Fixed: Destructor of Thread did not join 
+  itself when the thread has stopped running.
+  This could have caused a memory leak.
+* Changed: Changed v3_mib.cpp to be compatible
+  with SNMP++v3.2.2.
+
+Version 3.5.6d: CHANGES since Version 3.5.6b
+============================================
+
+* Fixed: Possible memory leak in AgentLog
+  when using dynamically created threads.
+* Improved: Compilation on Cygwin.
+* Fixed: Array bounds read in 
+  notification_log_mib.cpp line 1263.
+
+* Fixed: Daylight savings time bug in 
+  DateAndTime::update().
+
+Version 3.5.6b: CHANGES since Version 3.5.6a
+============================================
+
+* Fixed: MibTable::remove_row caused
+  segmentation fault when specified row was
+  not part of the table.
+* Changed: Opaque::get_syntax() to const.
+* Changed: snmp_pp_ext.h according to SNMP++
+  v3.2.1c
+
+Version 3.5.6a: CHANGES since Version 3.5.5b
+============================================
+
+* Fixed: Renamed MibGroup::is_persitent to
+  MibGroup::is_persistent.
+* Fixed: DateAndTime in 
+  snmp_textual_conventions.cpp
+* Fixed: MibLeaf::set_value(unsigned long)
+  changed syntax to INT32 instead to UINT32.
+
+Version 3.5.5b: CHANGES since Version 3.5.5a
+============================================
+
+* Improved: Some cleanups (#include, const).
+
+Version 3.5.5a: CHANGES since Version 3.5.5
+===========================================
+
+* Fixed: Removed const from Request::get_oid
+  which has broken AgentX++ request handling
+  with AGENT++ v3.5.4.
+* Fixed: MibTable::find_succ was not 
+  synchronized which could cause race
+  conditions when updating table (removing
+  rows) from MibTable::*_request methods.
+  Updating from MibTable::update was OK.
+* Fixed: MibStaticEntry::find_succ was not
+  completely protected by synchronization.
+* Fixed: Mib::next_access_control did not
+  lock a table when getting successor leaf.
+
+Version 3.5.5: CHANGES since Version 3.5.4a
+===========================================
+
+* Added: Example implementation in 
+  NotificationOriginator to add v2c trap
+  destination.
+* Added: INSTALL file which describes how to
+  setup AGENT++ with SNMP++ and AgentGen 
+  Pro.
+* Improved: agent.cpp for simulation agents.
+* Cleanup: agent_copy.cpp
+
+Version 3.5.4a: CHANGES since Version 3.5.4
+===========================================
+
+* Fixed: Thread::wait(ulong millis) did 
+  compute nsec part of time to wait 
+  incorrect.
+
+* Added: Vacm::get_vacm_tables() to get the
+  pointers of to the SNMP tables used by the
+  VACM.
+
+Version 3.5.4: CHANGES since Version 3.5.3a
+===========================================
+
+* Requires SNMP++v3.2 or later, if _SNMPv3 
+  is defined in "snmp++/include/config.h".
+
+* Changed behavior when committing a SET
+  request fails. The error status returned
+  by "commit_set_request" is now returned
+  as error status of the request, instead
+  SNMP_ERROR_COMITFAIL in case of any error.
+
+* Improved: Undoing of SET requests. 
+
+* Fixed: Wrong error status returned when
+  setting usmKeyChange object with 
+  uninitialized usmCloneFrom object.
+
+* Added: Request::search_value(..)
+
+* Changed: Request::get_oid() to const
+
+* Improved: Logging now follows the 
+  singleton design pattern which ensures
+  proper initialization.
+
+Version 3.5.3a: CHANGES since Version 3.5.2b
+============================================
+
+* Fixed: snmp_request.cpp: Did not count 
+  incoming traps (snmpOutTraps).
+
+* Fixed: Added support for (POSIX) thread 
+  implementations that do not allow a
+  thread to release a lock which the thread
+  does not own in FAST mode. This fixes 
+  also a problem that occured on WIN32 
+  operating systems which caused AgentX++
+  subagents to crash when performing SET
+  request in parallel on the same object or
+  with some latency.
+  POSIX threads FAST mode is used by default
+  on UNIX systems. The new LockQueue 
+  mechanism is used on WIN32 systems by
+  default. See include/agent++.h
+
+* Added: IPv6 support. SNMP++v3.2 or later
+  is needed to able to use it.
+
+* Added: Makefile.bcc provided by Luis F.
+  Pollo.
+
+Version 3.5.2b: CHANGES since Version 3.5.2
+===========================================
+
+* Fixed: request.cpp: Support for contexts 
+  with SNMPv1/v2c in conjunction with the 
+  SNMP-COMMUNITY-MIB.
+
+* Added: BCC32 support.
+
+Version 3.5.2: CHANGES since Version 3.5.1a
+===========================================
+
+* Improved: MibStaticTable: Added method to
+  be able to set values internally. Less 
+  memory consumption, because from now on
+  only OID suffixes are stored.
+* Fixed: In conjunction with AgentX++ 
+  responses to GETBULK request could not
+  meet RFC 1905 when a subagent region was
+  last in the view.
+
+Version 3.5.1a: CHANGES since Version 3.5h
+=========================================
+
+* request.cpp/v3_mib.cpp: Changed to be
+  compatible with SNMP++v3.1.5.
+* Fixed: AgentGen templates did not contain
+  "using namespace". 
+
+Version 3.5h: CHANGES since Version 3.5g
+========================================
+
+* Fixed: Degraded performance of multi-
+  threaded agents on Win32 due to 
+  inappropriate Windows API call in
+  Synchronized::notify().
+
+Version 3.5g: CHANGES since Version 3.5f
+========================================
+
+* Fixed: Persistency of USM users.
+
+Version 3.5f: CHANGES since Version 3.5e
+========================================
+
+* Fixed: Inappropriate error codes returned by 
+  USM MIB implementation.
+* Improved: Flexible logging provided by
+  Marty Janzen.
+
+Version 3.5e: CHANGES since Version 3.5c
+========================================
+
+* Fixed: Missing synchronization in 
+  RequestList::answer() accidentally 
+  removed in version 3.5c.
+
+* Added: Handling of unkown security model
+  error in request.cpp.
+
+Version 3.5c: CHANGES since Version 3.5a
+========================================
+
+* Added: Mib::delete_thread_pool() to allow
+  cleaner shutdown of an agent.
+
+* Fixed: Possible deadlock when more than max
+  threads requests where processed 
+  simultaneously.
+* Added: is_idle() method in ThreadPool.
+* Added: Makefile.hpux11
+* Fixed: Some compilation errors.
+* Fixed: snmpOutTooBigs was not incremented
+  correctly. 
+* Improved: GETBULK PDUs that would not fit 
+  into a response will be trimmed if possible.
+
+
+Version 3.5a: CHANGES since Version 3.5
+=======================================
+
+* Fixed: SimRowStatus behavior when RowStatus
+  maximum access is READONLY.
+
+* Fixed: Templates for AgentGen Pro generated
+  agents (agent.cpp files under 
+  agent++/agentgen) have been updated for new
+  thread handling.
+
+
+Version 3.5: CHANGES since Version 3.4.7b
+=========================================
+
+* Added: A multi-threaded agent now uses a
+  thread pool which starts 4 threads by 
+  default. Incoming requests are scheduled
+  using these threads. This improves 
+  performance and behavior when terminating
+  an agent. Besides the threads' stack size
+  can now be set.
+
+* Added: SimMibTable and SimRowStatus. Both
+  classes together now allow writing of
+  tables with RowStatus column in config 
+  mode. 
+
+* Added: Timeout for MibGroup that can be
+  used for the region timeout in AgentX 
+  subagent registrations.
+
+* Added: When AGENTPP_NAMESPACE is defined
+  in agent++.h all AGENT++ and AgentX++ code
+  will be part of the "Agentpp" namespace.
+  By default namespace is only used for 
+  __GNU__ compilers. 
+
+* Added: Voter interface for MibTable. Voters
+  are more than listeners. They listen for
+  RowStatus changes and they then can accept
+  or reject the requested change. An example
+  implementation of such a voter is the
+  MibTableSizePolicy class that can be used 
+  to define the maximum sizes of tables in a
+  single place.
+
+
+Version 3.4.7b:  CHANGES since Version 3.4.7a
+=============================================
+
+* Fixed: Error index was not 0 when returning
+  an authorizationError because of a 
+  noSuchView, noGroupName, or noAccessEntry
+  error. 
+
+Version 3.4.7a:  CHANGES since Version 3.4.7
+============================================
+
+* Improved: sysUpTime for the WIN32 
+  environment.
+
+* Fixed: OrderedListCursor::overwriteNth was
+  missing.
+
+* Fixed: Notification filtering on trap OIDs
+  did not work as defined in RFC 2573. 
+  RFC 2573 also requires filtering on the
+  object OIDs of the variable bindings in 
+  the notification. This functionality has 
+  been added to 
+  snmpNotifyFilterEntry::passes_filter.
+  The corresponding methods in Notification-
+  Originator and nlmNotifyEntry have been
+  removed. The implementations of the
+  SNMP-NOTIFICATION-MIB and the 
+  NOTIFICATION-LOG-MIB are affected by this 
+  change.
+
+
+Version 3.4.7:  CHANGES since Version 3.4.6
+===========================================
+
+* Improved: MibTable did use more memory as 
+  needed for managing its rows. Each cell
+  held its complete OID which leads to
+  exponential memory usage for big tables 
+  with long base OIDs. Now each MibLeaf that
+  is a columnar object (i.e., element of a
+  MibTableRow) will return the column sub-
+  identifier only when MibLeaf::key() is 
+  called. For example, the ifAdminStatus
+  column will not return "1.3.6.1.2.1.2.2.1.7"
+  anymore, instead it will return "7" only.
+  In order to get the complete OID of a 
+  MibLeaf (regardless whether it is a columnar
+  object or not) the new method 
+  MibLeaf::get_oid() should be used.
+
+* Changed: Mib::init() now returns a boolean
+  which will be always TRUE for Mib, but can
+  be overridden in subclasses (i.e., 
+  SubAgentXMib).
+
+* Added: Implementation of the 
+  NOTIFICATION-LOG-MIB.
+
+* Fixed: MibTable::serialize and 
+  MibTable::deserialize are now virtual.
+
+* Fixed: List.h: Array<T>::trim(..)  
+
+
+Version 3.4.6a:  CHANGES since Version 3.4.6
+============================================
+
+* Fixed: notification_originator.cpp: 285:
+  Possible dead lock in multi-threaded agent
+  when non-active row is accessed while traps
+  are sent out.
+
+Version 3.4.6:  CHANGES since Version 3.4.5a
+============================================
+
+* Fixed: StorageType did not check bad values
+  correctly.
+
+* Fixed: When in a multi-threaded agent SET 
+  requests had been processed in parallel that
+  shared some target objects which failed for
+  at least one of the requests the request
+  might not have been undone correctly.
+  This behavior has now been fixed by locking
+  all target objects of a SET request through
+  the whole two phase process. Thus, SET 
+  requests that share target objects are now
+  processed sequentially.
+
+* Fixed: mib_complex_entry.h was not protected
+  against multiple #include.
+ 
+* Note: Namespaces will be introduced in the
+  next release.
+
+Version 3.4.5a:  CHANGES since Version 3.4.5
+============================================
+
+* Fixed: Some (unused?) methods of the Array 
+  template.
+
+* Fixed: mib.cpp: Copy constructor of 
+  MibTableRow did not set index of columnar
+  objects correctly if columns had already a
+  valid index OID set. This bug caused some 
+  other problems (i.e., with ProxyForwarder) 
+  which were hard to identify. 
+
+* Fixed: mib.cpp: Memory leak when NOT using
+  Array template (= #undef USE_ARRAY_TEMPLATE).
+
+* Fixed: snmp_target_mib.cpp: The method
+  snmpTargetParamsEntry::get_target_params did
+  not handle SNMPv1 MP model correctly. This
+  bug caused the ProxyForwarder to deny 
+  forwarding of SNMPv1 requests.
+
+* Added: Example configuration script for
+  ProxyForwarder example.
+
+Version 3.4.5:  CHANGES since Version 3.4.4a
+============================================
+
+* Changed Makefiles to use DES library instead
+  RSAEURO. Thus, AGENT++v3.4.5/SNMP++v3.1 can
+  be used freely, also for commercial use. 
+
+Version 3.4.4a:  CHANGES since Version 3.4.4
+============================================
+
+* Fixed: On an attempt to set OID 0.0, agent 
+  crashed due to an uninitialized read in 
+  Mib::cleanup_set_request
+
+Version 3.4.4:  CHANGES since Version 3.4.3
+===========================================
+
+* Improved: MibTableRow used double linked
+  list for its elements. Now it uses an array
+  which improves performance about 5% for
+  GETNEXT/GETBULK requests and much more
+  when adding rows. Reduces memory consumption
+  as well.
+
+* Fixed: Memory leak when destroying rows 
+  via snmpRowStatus.
+
+* Added: Support for binding on a specific
+  IP address. Needs SNMP++v3.0.2b or later.
+
+
+Version 3.4.3:  CHANGES since Version 3.4.2a
+============================================
+
+* Fixed: Problem with row creation and non-
+  default columns that had valid initial values.
+* Fixed: Validity flag of MibLeaf was not well
+  defined and used. Clarified defintion and
+  usage. (See also above bug fix.)
+* Fixed: Chance of a crash when terminating
+  agent while requests are currently processed.
+* Fixed: Compilation problem with agent_copy.
+  
+
+Version 3.4.2a:  CHANGES since Version 3.4.2
+============================================
+
+* Fixed: Bug in MibTableRow::operator=.
+
+* Fixed: Compilation problems without SNMPv3.
+
+* Fixed: Notification timestamp is now set to 
+  sysUpTime when sent by NotificationOriginator
+  compiled without _SNMPv3.
+
+
+Version 3.4.2:  CHANGES since Version 3.4.1c
+============================================
+
+* Added: ProxyForwarder class implements a
+  proxy forwarder application as described in
+  RFC 2573. It can be register with a Mib instance
+  by calling Mib::register_proxy(..). The 
+  constructor takes two arguments: 
+
+  (1) The context engine ID contained in messages
+  that should be forwarded by the proxy forwarder.
+  If this parameter is the empty string "" then
+  all messages whose context engine ID differs 
+  from the agent's engine ID will be forwarded
+  according to the configuration in the 
+  SNMP-PROXY-MIB and SNMP-TARGET-MIB.
+
+  (2) The PDU type that should be forwarded.
+  The value all(0) matches all kind of PDU types.
+
+  For more details see the proxy_forwarder
+  example.
+
+* Fixed: Memory leak in MibProxyV3. Please note:
+  Use ProxyForwarder instead MibProxyV3 for new 
+  proxy implementations.
+
+* Fixed: Now sending report on messages with 
+  unknown context.
+  
+
+Version 3.4.1c:  CHANGES since Version 3.4.1b
+=============================================
+
+* Fixed: (v3_mib.*): Entries added to the SNMP++ 
+  usmUserTable during discovery did not appear in
+  the AGENT++ USM MIB.
+
+Version 3.4.1b:  CHANGES since Version 3.4.1a
+=============================================
+
+* Fixed: (v3_mib.cpp): Setting a usmOwnKeyChange 
+  object with a zero length string caused a 
+  segmentation fault.
+
+* Fixed: (notification_originator.cpp):
+  add_v1_trap_dest could not be called twice
+  successfully.
+
+* Fixed: Linking problems with NT using DLLs.
+
+* Fixed: Compilation warnings on BSD Unix.
+
+Version 3.4.1a:  CHANGES since Version 3.4.1
+============================================
+
+* Fixed: Opening of persistent storage files
+  on NT was not done with binary mode set.
+
+* Improved: Logging output is no faster, because
+  text is only composed when output is needed.
+  (Courtesy by Jochen Katz)
+
+Version 3.4.1:  CHANGES since Version 3.4p
+==========================================
+
+* Fixed: (mib.cpp): process_commit_set_request,
+  process_clean_up_set_request, process_undo_
+  set_request did not check, whether target 
+  object disappeared after preparing the set
+  request. (Could have caused seg. fault)
+
+* Fixed: (mib.cpp): GET request on not-accessible
+  table column did returned NO_ACCESS instead
+  NO_SUCH_OBJECT error.
+
+* Fixed: (mib.cpp): Reworked a lot of things
+  around the RowStatus state changes. 
+  PLEASE NOTE: The RowStatus column is now set
+  after all other subrequests for that row have
+  been commited. The preparation of a set request
+  now looks ahead. Thus, before an attempt to
+  change the RowStatus of a row is processed, all
+  other variable bindings are collected, that will
+  affect the row.
+  As with version 3.4.1 of AGENT++ the position of
+  the vb with the RowStatus value does not matter
+  any more! 
+
+  Before a new row is added to the table, all
+  values written by the creating SET request
+  are checked by calling prepare_set_request of
+  the set columns. After the preparation the
+  cleanup_set_request method is called. Please
+  note, that the prepare_set_request method can
+  be called twice for a subrequest, however the
+  cleanup_set_request method will then be called
+  twice too.   
+
+* Changed: (mib.[h|cpp]): MibTable::check_creation
+  now takes a second parameter which returns the
+  SNMP error status, if the creation fails.
+
+* Fixed: (mib.cpp): Persistent storage of tables
+  with more than 65535 bytes. Note that 
+  SNMP++v3.0h or later is required to store such
+  tables successfully.
+
+* Fixed: (v3_mib.cpp): RowStatus state changes.
+  Table constructors. Added value checking for
+  usmUserAuthProtocol and usmUserPrivProtocol.
+
+* Fixed: (vacm.cpp): RowStatus state changes.
+  Table constructors. Added TestAndIncr objects.
+
+* Fixed: (snmp_textual_conventions.[h|cpp]):
+  SnmpAdminString when used in tables did not
+  check boundaries. The min and max members 
+  of OctetStrMinMax had to be changed to be
+  protected instead of private for that reason.
+
+* Fixed: (snmp_target_mib.[h|cpp]): 
+  Setting TDomain and TAddress in the same PDU
+  for a new row caused a wrong value error.
+
+* Fixed: (request.cpp): Incremented InvalidMsg
+  counter instead ASN1ParseErrors counter for
+  some types of invalid PDUs.
+
+* Added: (snmp_textual_conventions.cpp):
+  Added definition of oidSnmpSetSerialNo, which
+  can be used in conjunction with the TestAndIncr
+  class to implement the snmpSetSerialNo managed
+  object (see atm_mib example).
+ 
+
+Version 3.4p:  CHANGES since Version 3.4o
+=========================================
+
+* Fixed: (mib.cpp): MibTable::is_index_valid
+  did not reject too short indexes correctly.
+
+* Fixed: (mib.cpp): MibTable::commit_set_request
+  did call MibTable::set_value more than once
+  for each set column. Thus, events also were
+  triggered more than once.
+
+
+Version 3.4o:  CHANGES since Version 3.4n
+=========================================
+
+* Fixed: VacmViewTreeFamilyTable did not update
+  index cache when loading rows from persistent
+  storage. Thus, now the whole VACM can be 
+  stored persistently.
+
+* Fixed: SNMPv3 inform requests did not make 
+  engineID discovery.
+
+* Added: Mib::save_all() saves all persistent
+  MIB objects to disk.
+
+
+Version 3.4n:  CHANGES since Version 3.4m
+=========================================
+
+* Fixed: NotificationOriginator did not send v3
+  traps.
+
+
+Version 3.4m:  CHANGES since Version 3.4l
+=========================================
+
+* Fixed: MibTable::get_next_avail_index returned
+  wrong index when table was empty.
+
+* Fixed: GETBULK in some cases did not process last
+  repetition correctly. This affects AgentX++ when
+  processing GETBULK requests with more than one
+  repeated variable bindings. To fix this with older
+  versions of AGENT++ remove line 3482 in mib.cpp: 
+  "req->dec_outstanding();"
+
+* Fixed: GETBULK with zero repetitions failed with
+  AgentX++. Insert the following line into mib.cpp
+  at line 3427:
+	// If no repetetions, then do not wait for them 
+	if (maxrep == 0) req->dec_outstanding();
+
+* Fixed: GETBULK: If the non-repeater value was less
+  than the given variable bindings and max_repetitions
+  was zero than AgentX++ was not able process the 
+  request correctly. To Fix this, move assignment
+	outstanding = size;
+  in request.cpp line 161 below the following if 
+  statement. 
+
+
+Version 3.4l:  CHANGES since Version 3.4k
+=========================================
+
+* Fixed: MibTable::is_index_valid did not check correctly
+  for invalid non-implied length octet strings.
+
+* Fixed: MibTable::get_rows() did not return a pointer 
+  to a list and thus did not work properly.
+
+* Added: MibTable::rows() returns a pointer to the 
+  internal list of the table rows. This is a direct and 
+  fast way to access the rows of a table.
+
+
+Version 3.4k:  CHANGES since Version 3.4j
+=========================================
+
+* Added: Support for dynamic tables. Although dynamic
+  tables could be implemented with previous versions of
+  AGENT++, it was not clear which methods needed to be
+  be overriden. Now there is a single method which can do
+  the job. The MibTable::update(Request*) method triggers
+  a table to be updated before a (sub-)request is 
+  processed on it. 
+
+* Added: Dynamic table example.
+
+* Changed: Mib::find_managing_object now takes a fourth
+  argument: the pointer to the request that is searching. 
+
+* Fixed: NotificationOriginator::add_v1_trap_destination
+  did not accept a second target entry.
+
+
+Version 3.4j:  CHANGES since Version 3.4i
+=========================================
+
+* Fixed: Memory leaks in USM (v3_mib.cpp)
+
+* Fixed: Row creation via RowStatus object
+  using createAndGo allowed writing of read-only
+  columnar objects.
+
+* Fixed: RowStatus did not allow to set its value
+  to the current value again.
+
+* Fixed: OrderedList::index(T* t) returned 0 instead
+  of -1 if t had not been part of the list.
+
+* Fixed: If the UNDO of a row deletion failed, then 
+  a row with the same index could not have been created
+  afterwards.
+
+* Fixed: snmpRowStatus::check_state_change(). If a row
+  was deleted with rowDestroy and another value of that
+  row was set in the same PDU afterwards, 
+  check_state_change() returned no error.
+
+* Renamed class Log to AgentLog.
+
+
+Version 3.4i:  CHANGES since Version 3.4h
+=========================================
+
+* Fixed: The SNMP counters InPackets, BadCommunityNames,
+  and InASNParseErrs did not count correctly.
+
+* Changed examples and AgentGen templates to send
+  coldStart trap even if _SNMPv3 is not defined.
+
+* Fixed: Authentication failure trap was not send
+  if _SNMPv3 had been undefined.
+
+
+Version 3.4h:  CHANGES since Version 3.4g
+=========================================
+
+* Fixed: GETBULK processing without _SNMPv3 defined
+  caused deadlock on end of mib view. 
+
+* Changed AgentGen Ready2Compile templates.
+
+* Added: Not-accessible MibLeaf objects cannot be
+  added to MibGroup neither to Mib instances.
+
+
+Version 3.4g:  CHANGES since Version 3.4f
+=========================================
+
+* Added MibGroup::remove method to remove objects
+  from a group. Note: In order to unregister a
+  MibEntry object, after having registered the
+  group it belongs to, it will have to be removed
+  from the corresponding Mib instance too.
+
+* Added Mib::add_context and Mib::remove_context
+  methods to add and remove contexts from a Mib
+  instance. Note: If you add a context to a Mib
+  you also should add the appropriate entries 
+  into the VACM, in order to be able to access
+  objects within that context.
+ 
+
+Version 3.4f:  CHANGES since Version 3.4e
+=========================================
+
+* Fixed: Unclosed LOG_BEGIN LOG_END in MibProxyV3.
+
+* Changed logging macros to open their own scope,
+  which helps detecting unclosed LOGS.
+
+* Fixed: Added bound checks to Log::set_filter. 
+  
+
+Version 3.4e:  CHANGES since Version 3.4d
+=========================================
+
+* Fixed: If length of a BER encoded response will 
+  exceed the MAX_SNMP_PACKET value a response with
+  error status of tooBig is returned.
+
+* Added agentgen directory with Makefiles and
+  sample agent main routine, that can be used with the
+  AgentGen Professional ready2compile code generation
+  function to create a compilable agent without editing
+  any code.
+
+
+Version 3.4d:  CHANGES since Version 3.4c
+=========================================
+
+* Updated the examples according to the changed engine 
+  boots counter handling in SNMP++v3.0d
+
+* Fixed: Compilation error with VC++ 6.0 on NT
+  when compiling without _SNMPv3 defined 
+  (Mib::process_get_bulk_request).
+
+
+Version 3.4c:  CHANGES since Version 3.4b
+=========================================
+
+* Fixed EndOfMibView exception reporting for GETBULK
+  requests. It Did not return the request oid in
+  the exception variable binding, instead it returned
+  the last found oid.
+
+* Fixed compilation errors without _THREADS defined
+  in agent++.h.
+
+
+Version 3.4b:  CHANGES since Version 3.4a
+=========================================
+
+* Added two objects to the AGENTPP-SIMULATION-MIB. Those
+  objects make it possible to delete rows from tables 
+  of a simulation agent using SNMP. You can add those
+  objects to your simulation agent by adding a
+  agentpp_simulation_mib MibGroup to your Mib that is
+  constructed by using the new constructor 
+  agentpp_simulation_mib(Mib*).
+  
+* Fixed: MibTable::remove_unused_rows removed wrong rows
+  which could have caused a segmentation fault.
+
+* Changed NotificationOriginator class in several ways:
+
+  - Now also available without _SNMPv3.
+
+  - Fixed v3 traps.
+
+  - Uses SNMP-COMMUNITY-MIB (if present) to determine the
+    community for SNMPv1/v2c traps from the securityName 
+    stored in snmpTargetParamsSecurityName.
+
+* Fixed: SnmpTagValue did not accept empty tag strings.
+
+* Made find_managing_object() and find_next() methods of
+  class Mib public.
+
+
+Version 3.4a:  CHANGES since Version 3.4
+========================================
+
+* Changed multi-threading support for NT from MFC threads
+  to WIN32 threads.
+
+* Updated Makefile.nt (although the use of VC++ projects
+  is recommended).
+
+
+Version 3.4:  CHANGES since Version 3.3b
+========================================
+
+* Added multi-threading support for NT.
+
+* Fixed: The NotificationOriginator class now supports
+  v3 traps and iforms too.
+
+* Changed locking of log messages. 
+
+* Added MibComplexEntry, MibStaticTable, and MibStaticEntry
+  classes. They can be used to implement light weight tables
+  or tables which access their management information using
+  proprietary communication protocols (other than AgentX). 
+
+  An example which shows the usage of MibStaticTable had been
+  added too.
+
+* Added the tool "agent_copy" which can be used to take a
+  snap shot from an existing (real) agent and initialize
+  an AGENT++ simulation agent with this data. 
+
+* Changed persistency concept. Now each MibGroup instance
+  is responsible for making objects persistent. All objects
+  of a group are now stored in a single file whose name
+  is determined by the second (new) parameter of the MibGroup
+  constructor and the file's extension is the context the
+  group is part of. 
+
+  If a MibGroup is created using only one paramter all its
+  objects are volatile.
+
+* Removed snmpUnavailableContexts and snmpUnknownContexts 
+  from snmp_target_mib. Is already implemented in vacm.
+
+* Removed snmp_mpd_mib.*. The MPD group is now part of the
+  USM (v3_mib.*).
+
+* Added the simSysGroup which is similar to sysGroup, except
+  that sysDescr, sysObjectID, and sysServices are writable
+  when the agentppSimMode is set to config(2).
+
+* Fixed: snmpEnableAuthenTraps.
+
+* Changed Log::set_filter to use the log classes directly.
+  DEBUG_LOG_IND and all other *_IND log definitions are no 
+  longer defined in log.h. Use DEBUG_LOG, etc. instead.
+
+* Centralized answering of requests in Mib::finalize(). 
+  Changed the default values for the "answer" parameter of
+  RequestList::error(..) and RequestList::done(..) to FALSE
+  accordingly. Requests are now answered by Mib::finalize()
+  only.
+
+* Added default constructor to class Vacm.
+
+* Fixed: Calling Request::position caused segmentation fault.
+  (Fortunately, never called from within AGENT++v3.3x)
+
+* Fixed: MibProxy: if two or more consecutive MibProxy
+  registrations were empty, then the agent would have been
+  returning END_OF_MIBVIEW, although a third MibEntry
+  would have been available. 
+
+* Fixed: ~Mib() did not acquire all locks (mib_lock() and
+  start_synch() of deleted mib entries).
+
+* Fixed: Mib::process_set_request did not call 
+  Mib::process_cleanup_set_request if prepare faild.
+
+* Fixed: Mib::add as well as MibContext::add detect duplicate
+  registrations. 
+
+* Fixed: A failed commit for a MibLeaf scalar object did not
+  return an error. 
+
+* Changed default behaviour of MibLeaf::unset(). It now 
+  always returns success, because if undo is not set
+  it is assumed that nothing has to be undone. If another
+  (or the old) behaviour is needed the method must be
+  overloaded in a subclass.
+
+* OidxRange constructor does not longer sort lower and upper
+  bound. Thus, an upper bound may be specified, that is _less_
+  than the lower bound. 
+
+
+Version 3.3b:  CHANGES since Version 3.3a
+=========================================
+
+* Fixed: memory leaks in notification_originator.cpp,
+  snmp_textual_conventions.cpp, and snmp_request.cpp.
+
+* Handle SnmpUInt32 as Gauge32 (both use the same ASN.1 tag
+  value).  
+
+
+Version 3.3a:  CHANGES since Version 3.3
+========================================
+
+* Fixed: SET requests did not fail for non-existing objects.
+  A SET request on a non-existing object now returns 
+  noCreation (SNMPv2c, SNMPv3) or noSuchName (SNMPv1).
+
+
+Version 3.3:  CHANGES since Version 3.2b
+========================================
+
+* AGENT++v3.3 when compiled with the _SNMPv3 flag
+  needs SNMP++v3.0 (the first non beta release of SNMP++v3).
+  SNMP++v3.0 introduces the UTarget class which AGENT++v3.3
+  now needs.
+
+* Constructors of MibLeaf. The boolean value has_default
+  has been changed to an int value, in order to allow
+  additional standard modes that control the handling
+  of an MibLeaf's value. 
+
+  A new mode (besides has default value or not) has been
+  introduced which determins whether the columnar object
+  may be changed when its row has a rowStatus of active(1),
+  or not.
+
+* Constructors of MibTable. Since version 3.3 the index
+  of new rows can be checked more precisly than in earlier
+  versions. Unfortunatly, a new constructor had to be
+  introduced that accepts an array of the index_info
+  structure. This array contains an element for each
+  object in the INDEX clause of a table. Each index_info
+  structure has four members:
+  1. the type of the index object (e.g., sNMP_SYNTAX_INT)
+  2. a boolean value that determines whether the (sub-)index
+     has an implied length or not. This may only be specified
+     for the last element in an array of index_infos.
+  3. the minimum length of the index object meassured in
+     oid sub-identifiers.
+  4. the maximum length of the index object meassured in
+     oid sub-identifiers. (Note: for constant length
+     index objects like sNMP_SYNTAX_INT or sNMP_SYNTAX_IPADDR
+     min and max are equal and 1 or 4, respectively)
+
+* Added support for SNMP-PROXY-MIB and SNMP-COMMUNITY-MIB.
+
+* Added support for several SNMP textual conventions defined
+  in the SNMP-FRAMEWORK-MIB.
+
+* Various modifications in nearly all MIB implementations
+  of AGENT++ to use the new features and the new textual
+  convention implementations.
+
+* Fixed: Oidx::as_string() did not convert zero 
+  subidentifiers correctly.
+
+
+Version 3.2b:  CHANGES since Version 3.2a
+=========================================
+
+* Native NT support for single threaded, SNMPv1/v2c agents.
+  Thanks to Gary McWilliams, mailto:GMcWilliams@ccc-group.com
+
+* Support for simulation agents (AGENTPP-SIM-MIB).
+  Updated the ATM-MIB example to show the new features:
+  Set the simulation mode to config(2) and then set the
+  atmVcCrossConnectIndexNext to a random value. You will
+  see you can set the value, although normally it has a
+  MAX-ACCESS of read-only. If you set the mode to oper(1)
+  you won't be able to set atmVcCrossConnectIndexNext.
+
+* Fixed: compiler warnings in vacm.cpp, v3_mib.cpp, 
+  snmp_textual_conventions.cpp, snmp_pp_ext.cpp, mib.cpp
+ 
+
+Version 3.2a:  CHANGES since Version 3.2
+========================================
+
+* Calling MibTable::row_delete(..) before removing timed out 
+  rows (rows that are notReady for longer than 5 minutes).
+
+* Fixed: SegFault when removing obsolete rows (I hope this
+  is the last time I have to fix this beast ;-).
+
+* Fixed: Compilation problems with undefined _SNMPv3 AND
+  using SNMP++2.6(e).
+
+
+Version 3.2:  CHANGES since Version 3.1c
+========================================
+
+* Added class snmpDisplayString to snmp_textual_conventions.
+
+* Added snmpSilentDrops, snmpProxyDrops to snmp_group.
+
+* Fixed: GETBULK operation.
+
+* Fixed: Several USM and SNMPv3 counters have been of type
+  Integer32 - should be Counter32 instead.
+
+* Support of SNMP-MPD-MIB
+
+* More precise error handling (snmpInBadVersions, 
+  snmpInASNParseErrors, etc.)
+
+* SNMP errors like NO_SUCH_OBJECT, BAD_VALUE, WRONG_VALUE, etc.
+  are now v1/v2c/v3 coex document compliant. 
+
+* Fixed: SnmpAdminString returns WRONG_LENGTH instead of 
+  WRONG_VALUE for SET requests trying to set too short or too
+  long admin strings.
+
+
+Version 3.1c:  CHANGES since Version 3.1b
+=========================================
+
+* Added the Opaque class to snmp_pp_ext.[h|cpp].
+
+* Fixed: List::removeFirst() caused segfault when
+  removing last element of List.  
+
+
+Version 3.1b:  CHANGES since Version 3.1a
+=========================================
+
+* Fixed: Concurrent creation of more than one row with at
+  least one row creation by createAndGo sometimes
+  created objects that shouldn't had been created.
+
+* Fixed: Compilation error about undefined socklen_t on
+  Solaris.
+
+* Automatic deletion of unused rows (rows with RowStatus 
+  of notReady(3)) must now be explicitly called from the
+  main routine via Mib->cleanup(). 
+
+
+Version 3.1a:  CHANGES since Version 3.1
+========================================
+
+* Fixed: Compiling SNMP++v3 and AGENT++v3.1 with 
+  #undef _SNMPv3 caused compiling and linking errors.
+
+
+Version 3.1:  CHANGES since Version 3.03
+========================================
+
+* Replaced collection class for rows of MibTable with a AVL
+  tree based colection class (was double chained list before).
+  This speeds up table lookups - especially for large tables.
+  
+  Attention! If you used OrderedListCursor to traverse the
+  content of a MibTable, you have to change the cursor class
+  to OidListCursor. No other changes are needed, but you may
+  use the new method OidListCursor::lookup(Oidx* key) for very
+  fast positioning the cursor at the first row with an index
+  greater or equal key.
+
+* Fixed: Memory leak when destroying a persistent MIB object
+  that could not write its contents to the given file. 
+
+* Fixed: Trying to set a readonly variable with SNMPv1 returned
+  notWritable -> should return noSuchName.
+
+
+Version 3.03:  CHANGES since Version 3.02
+=========================================
+
+* Improved synchronisation concept:
+  
+  Every request runs within its own thread. While looking up the
+  objects involved in the request the MIB registration is locked.
+  Just before the registration is unlocked, the requested object 
+  (MibLeaf, MibTable, etc.) is locked. When an MIB object should
+  be unregistered, first the registration is locked and then the
+  object itself. This guarantees that no other thread is running
+  within the object.
+
+* Fixed: GETNEXT at end of mib view returned wrong error index.
+
+* Fixed: Writing read-only objects returned noAccess instead of 
+         notWriteable. 
+
+
+Version 3.02:  CHANGES since Version 3.01
+========================================= 
+
+* The CMD-EXECUTION-MIB implementation replaces the ctrl-mib example.
+
+* Updated MibProxy: can now be used to proxy v1/v2c to v1/v2c/v3 using
+  the USM/VACM. Thus you can use the whole bunch of security mechanisms 
+  of v3 for "old" v1/v2c agents. 
+
+* Fixed: MibTable::could_ever_be_managed() did not accept variable
+  table indexes of length 2.
+
+* Fixed: SNMP-TARGET-MIB: snmpTargetAddrTDomain could not be set.
+
+* Fixed: With v3 support activated read/write/notify v1/v2c communities
+  can now be set using the USM and VACM only.
+
+* Fixed: Terminating an agent sometimes caused a segmentation fault in 
+  ~Mib().
+
+* Fixed: MIB II SNMP counter of incoming packets did not count any 
+  packets.
+
+
+Version 3.01:  CHANGES since Version 3.0
+======================================== 
+
+* Interface MibTable::ready_for_service(Vbx** pvbs, int sz) changed to
+  MibTable::ready_for_service(Vbx* pvbs, int sz)
+
+* Fixed: MibProxy::commit_set_request() caused segmentation fault.
+         (Patch provided by Mohammed-Ali Munir, Ericsson)
+
+* Fixed: SnmpRequest::process() now sets the write community for SET
+         requests correctly.  
+
+* Fixed: MibLeaf::unset() caused segmentation fault.
+
+* Implementation of the SNMP-TARGET-MIB and SNMP-NOTIFICATION-MIB 
+  (including a notification originator class using those MIBs).
+
+
+
+Version 3.0:  CHANGES since Version 2.11
+========================================
+
+* NEW! SNMPv3 support. Changes are are enclosed in "#ifdef _SNMPv3".
+
+* Snmpx no longer overrides Snmp::snmp_engine and Snmp::MyMakeReqID.  
+
+* Fixed: User created rows in MibTables with snmpRowStatus had
+  disappered (an event log of level 2 was generated) although their 
+  rowStatus had been set to notInService or active within 5 minutes.
+  This situation was very unlikely, but could have been happen. 
+  Now only rows that are notReady for a minimum of 5 minutes will be
+  deleted (now a WARNING log of level 2 is generated if such a row is
+  removed)
+
+* MibTable::find, MibTable::find_next interface changed and reimplemented,
+  MibTable::find_prev added. 
+  Fixed GETNEXT bug (former version returned END_OF_MIBVIEW, if an oid
+  between two objects of a column had been requested) 
+
+* Fixed: auto_index_generation now works again also for scalar columns.
+
+* Fixed: Removing of unused rows caused segmentation fault.
+
+
+Version 2.11: CHANGES since Version 2.1
+========================================
+
+* ready_for_service now calls MibLeaf::value_ok() in order to check
+  the values of the columnar objects of a row.
+
+* SnmpRequest::getbulk and SnmpRequest::gettable added. 
+
+* Added ATM-MIB example. The source code atm_mib.h and atm_mib.C
+  has been generated automatically from the ATM-MIB (RFC1695).
+  See http://fock.de/frank/english/agent++src/index.html for how you
+  can obtain such generated files for your MIB.
+
+  
+
+Version 2.1: CHANGES since Version 2.02
+========================================
+
+* Added automatic index generation for MibTables with Oid or OctetStr 
+  index column. Changed the Ctrl-Mib example to use the new feature.
+
+* Fixed: Authentication failure response PDU type is now 
+	 sNMP_PDU_RESPONSE. 
+
+* AgentX compatibility enhancements:
+  
+  - simplified multi-threading
+  - support for 2PC SNMP SET request processing. Now the methods
+
+    	int commit_set_request(Request*, int) 
+    	int prepare_set_request(Request*, int&) 
+
+    should return an error code.
+    Additionally the following two virtual functions have been added to
+    MibEntry:
+    			int  undo_set_request(Request*, int&) 
+    			void cleanup_set_request(Request*, int&)
+
+    The MibLeaf::commit_set_request now saves MibLeaf::value before 
+    committing. The commit can then be undone by calling 
+    MibLeaf::undo_set_request, before MibLeaf::clean_up_request is called.
+   
+
+Version 2.02: CHANGES since Version 2.01a
+=========================================
+
+* Fixed: compiling without _THREADS didn´t work.
+
+* Added trapDestGroup containing trapDestTable and trapDestIndexNext,
+  which support the (de)registration of trap destinations and 
+  sending them depending on the registrated destinations.
+
+
+Version 2.01a: CHANGES since Version 2.01
+=========================================
+
+* Fixed: rows of SNMP tables with RowStatus that do not implement their 
+  own ready_for_service method could not have been set active.  
+
+
+Version 2.01: CHANGES since Version 2.0
+=======================================
+
+* Minor makefile (examples) and source code changes (mib.C) to improve 
+  Digital Unix support.
+
+
+Version 2.0: CHANGES since Version 1.01
+=======================================
+
+* Support for GETBULK operation (SNMPv2c only). Each GETBULK operation
+  is executed as an extra thread if multi-threading is turned on.  
+
+* Multi-processing replaced by pthreads. The methods 
+  ::update(...), ::result(...), Mib::busy(), and Mib::process_updates()
+  as well as the class Thread have been completely removed.
+  The class ThreadManager is totally different to version 1.01.
+
+* A lot of internal changes to support multi-threading using pthreads.
+
+* Extra constructors for MibEntry, MibLeaf and MibTable to activate
+  multi-threaded execution of method routines (see the AGENT++ 
+  documentation for details).
+
+* Added more details to the Controlled MIB (ctrl-mib) example 
+
+
+Version 1.01: CHANGES since Version 1.0
+=======================================
+
+* GETNEXT bug fixed (in rare cases instead returning the next 
+  managed object, its successor has been returned).
+
+* Makefile supports shared libs.
+
+* Now the returned value if "end of mib" is reached is fully SNMPv1 
+  compatible (if the incoming request´s version has been SNMPv1).
+
+* Some minor changes of the debugging log messages.
+
+* The Pix.h file is no longer needed and has been removed from the
+  AGENT++ package.

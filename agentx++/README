@@ -1,0 +1,20 @@
+
+AgentX++ README
+===============
+
+AgentX++ is an implementation of the AgentX agent 
+extensibility protocol, as described in RFC2741.
+
+It has been tested against the UCD 4.1.2 master and subagent. 
+The following problems with the UCD 4.1.2 release were found
+during testing:
+
+* The Opaque type handling by the UCD subagent.
+* The UCD subagent does not handle search ranges correctly.
+* The UCD master does not handle index allocation and
+  row registration correctly (thus, shared tables should not
+  be used with the UCD master).
+
+Other inter operability testings have not been done yet. 
+
+

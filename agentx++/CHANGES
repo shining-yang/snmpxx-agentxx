@@ -1,0 +1,651 @@
+
+AgentX++ v2.0.6 (AGENT++v4.0.4 or later)
+========================================
+
+* Improved: Uncommented unused log names. 
+* Fixed: Removed compiler warnings due to unhandled enums of AgentX index 
+  allocation strategies.
+* Fixed [APP-39]: Memory leak within process_ax_registration when add_entry 
+  fails adding new AgentXNode as part of a split node.
+* Improved: Shutdown behavior when agentx->stopit has been set to true, 
+  AgentX responses will no longer be processed to speed up shutdown and 
+  avoid deadlocks.
+
+AgentX++ v2.0.5 (AGENT++v4.0.2 or later)
+========================================
+
+* Fixed: [APP-36]: Segmentation violation due to double free on a
+  index vb array in AgentXSharedTable::index_allocated if the index
+  allocation failed.
+* Fixed: [APP-37]: The AgentX++ master agent may process a subagent 
+  repsonse while the original SNMP request is being processed 
+  (by another subagent) as well. This could lead to memory access 
+  violations, because one thread may delete a request while the 
+  other is still operating on it. 
+
+AgentX++ v2.0.4 (AGENT++v4.0.2 or later)
+========================================
+
+* Fixed: [APP-32]: Possible deadlock (if AgentX session does not exist
+  for incoming request) in MasterAgentXMib::process_ax_addagentcaps 
+  and MasterAgentXMib::process_ax_removeagentcaps.
+
+AgentX++ v2.0.3 (AGENT++v4.0.2 or later)
+========================================
+
+* Fixed [APP-32]: Deadlock in AgentXCloseTask::run() with NO_FAST_MUTEXES. 
+  AgentX Close PDU is not properly responded because session is closed too 
+  early.
+* Fixed: Typo in log message (master.cpp).
+* Added: Option in master agent to allow subagent connections from a 
+  provided IP address only.
+
+AgentX++ v2.0.2 (AGENT++v4.0.2 or later)
+========================================
+
+* Fixed: [APP-29] Improved sub-agent index allocation through 
+  local index registry. 
+
+AgentX++ v2.0.1 (AGENT++v4.0.1 or later)
+========================================
+
+* Fixed: [APP-25] make distcheck.
+* Fixed: [APP-26] agenpro template support for AgenPro 3.1.4.
+
+AgentX++ v2.0 (AGENT++v4.0 or later)
+====================================
+
+* Improved [APP-19]: Added clock_gettime usage.
+* Improved [APP-17]: Performance optimization: MibEntry->find_succ 
+  was called more often than needed when processing get_next and
+  get_bulk PDUs.
+* Improved [APP-22]: Changed Sychronized::trylock behavior 
+  to support detection of recursive locking. This feature is 
+  needed by AgentX++ to support recursive Posix Thread locks.
+* Added [APP-21]: autoconf support for AgentX++.
+* Improved: Replaced boolean with bool.
+
+AgentX++ v1.5 (AGENT++v3.6 or later)
+====================================
+
+* Improved: agentppTestShardTable example now
+  illustrates how AgentX table row operations
+  can be integrated into the two-phase-commit
+  of a SET request.
+
+AgentX++ v1.4.18a (AGENT++v3.5.31 or later)
+===========================================
+
+* Fixed: [APP-4] Race condition when compiling
+  without _SNMPv3 caused by AgentXRequest
+  constructor.
+
+AgentX++ v1.4.17 (AGENT++v3.5.30)
+==========================================
+
+* Fixed: Linker problems on MacOS X 10.5.6
+* Fixed: Memory leak and possibel deadlock in
+  agentx_master.cpp (Abil George).
+* Fixed: Memory leak if AgentXSlave looses
+  connection with master.
+
+AgentX++ v1.4.16 (AGENT++v3.5.28 or later)
+==========================================
+
+* Fixed: Removed lots of compiler warnings 
+  (-Wcast-qual, -Wshadow), unused code, and 
+  other things (Jeremy Nimmer)
+* Fixed: Compile errors when using namespaces.
+* Removed Opaque dependency and replaced by
+  OpaqueStr from SNMP++ in subagent example.
+
+AgentX++ v1.4.15 (AGENT++v3.5.27 or later)
+==========================================
+
+* Removed compiler warnings in agentx.cpp.
+* Removed Opaque dependency and replaced by
+  OpaqueStr from SNMP++.
+* Improved: Subagent2 example command line 
+  parameter parsing.
+
+AgentX++ v1.4.14 (AGENT++v3.5.25 or later)
+==========================================
+
+* Changed: MAX_REPETITIONS constant no longer
+  depends on PDU_MAX_VBS from SNMP++ since
+  that constant no longer exists because
+  the number of VBs per PDU is now variable. 
+* Improved: Example master agent can now also
+  set the TCP AgentX port by command line 
+  parameter.
+
+AgentX++ v1.4.13a (AGENT++v3.5.24 or later)
+===========================================
+
+* Added: Option to enable compatibility mode
+  for NET-SNMP 5.1 subagent, which does not
+  correctly report endOfMibView (it returns
+  an empty response instead).
+* Fixed: Compilation problem with GCC 4.
+
+* Fixed: AgentX socket is now properly closed
+  when subagent detects connection loss.
+* Fixed: Connection loss when interrupt signal
+  has been received.
+
+AgentX++ v1.4.12c (AGENT++v3.5.23 or later)
+===========================================
+
+* Fixed: Race condition when processing SET
+  requests in subagents introduced by changes of
+  v1.4.12b.
+
+* Fixed: Missing queue->unlock() when processing
+  an AgentX response by a subagent when the
+  corresponding request already timed out. 
+* Fixed: Race condition in MasterAgentXMib
+  when processing responses from several
+  sub-agents for a single request.
+* Changed: Logging facitilities have been
+  moved from AGENT++ -> SNMP++.
+
+AgentX++ v1.4.11 (AGENT++v3.5.22 or later)
+==========================================
+
+* Fixed: Shared table did not reregister
+  its rows when master agent is restarted.
+  The new method reinit() for (shared) tables
+  has been added for this purpose.
+* Fixed: Due to a change in the Pdu class of 
+  SNMP++v3.2.15 subagent registration did not
+  work any more if no session ID had been
+  specified by overwriting the SubAgentX::
+  create_session(..) method.
+* Fixed: agentXSessionObjectID did return
+  a null value instead of 0.0 by default.
+* Fixed: Master agent could crash on a 
+  try to add agent caps by a subagent that
+  failed to open a session.
+* Added: Example code in ATM example which shows
+  how to add community-to-security-name mapping
+  for the "public" community.
+* Improved: Added further clarifications to the
+  license agreement.
+
+AgentX++ v1.4.10d (AGENT++v3.5.18 or later)
+===========================================
+
+* Added: SNMP++ namespace support.
+
+* Improved: Revised (clarified) license 
+  agreement.
+
+AgentX++ v1.4.10b (AGENT++v3.5.18 or later)
+===========================================
+* Fixed: Compilation problem with _SNMPv3
+  undefined.
+* Improved: Shutting down master agent closes
+  subagent connections. Caution: RequestList
+  must not be deleted before Mib. This was
+  not the case in earlier versions!
+
+* Fixed: Subagent never reached status RUN
+  and consequently runtime registration did
+  not work (anymore). 
+* Improved: Error log when disconnecting on
+  WIN32.
+* Fixed: Possible dead lock condition when
+  registering/unregistering shared table
+  rows within while the same table is within
+  a SET request transaction.
+* Improved: Other dead lock conditions 
+  (conducted by authorized clients running a
+  DoS attack) are prevented by using the new
+  QueuedThreadPools for asynchronous
+  processing of AgentX messages.
+* Improved: Closing subagent connections
+  does no longer create addtional thread(s).
+* Added: agentpp_config_mib to the master
+  example.
+* Added: Filter for AgentX subagent addresses
+  for TCP subagent connections is now added
+  to the example master by default, to allow
+  subagent on the localhost to connect to
+  the master using TCP.
+* Improved: AgentXSharedTable::clear() now
+  overwrites MibTable::clear() to unregister
+  rows properly.
+* Fixed: AgenPro2 master and subagent
+  templates did not use include file scoping
+  for AgentX++.
+
+AgentX++ v1.4.9b (AGENT++v3.5.17 or later)
+==========================================
+* Fixed: Handling of out-of-range responses
+  by incorrectly implemented AgentX subagents
+  (i.e. NET-SNMP 5.1.1 and earlier) caused
+  endless loop.
+* Improved: Closing subagent connections
+  when subagent does not gracefully close
+  connection.
+
+* Fixed: Patch of v1.4.8b was missing in
+  v1.4.9.
+* New: Include files are now located in
+  include/agentx_pp and thus the prefix
+  agentx_pp/ has to be used from now on
+  to include an agentX++ header file.
+  In addition the include scoping of 
+  AGENT++v3.5.17 and SNMP++v3.2.11.
+
+AgentX++ v1.4.8b (AGENT++v3.5.15 or later)
+==========================================
+* Fixed: Race condition in 
+  MasterAgentXMib::remove_entry that could 
+  cause master agent to crash if rows of the
+  same table were deleted by subagent(s) in
+  parallel.
+
+* Changed: Examples and AgenPro templates
+  for master agent, because SNMP++v3.2.10
+  changed the v3MP constructor.
+
+AgentX++ v1.4.8 (AGENT++v3.5.14 or later)
+=========================================
+
+* Changed: MasterAgentXMib and SubAgentXMib
+  constructors with persistency path parameter.
+  The type of the parameter has been changed
+  from "const char*" to "const OctetStr&".
+* Added: IPv6 support for TCP subagent 
+  connections.
+* Added: AGENTPP-AGENTX-MIB implementation
+  for source address filtering of subagent
+  connections at the master.
+* Fixed: TCP address was not listed in 
+  AGENTX-MIB connection table for TCP sub-
+  agent connections.
+
+AgentX++ v1.4.7d (AGENT++v3.5.10 or later)
+==========================================
+
+* Improved: Master example now use the 
+  Snmp::socket_startup().
+  (needs SNMP++v3.2.9 or later)
+
+* Fixed: AGENTX-MIB is no longer persistently
+  saved (which is not necessary and could 
+  cause memory leaks)
+* Changed: Changed boot counter initialization
+  in examples and AgenPro templates to use
+  the new routines provided by AGENT++v3.5.12.
+
+* Fixed: Possible seg.fault in agentx_node.cpp
+  when a SET request is issued on a subagent
+  that did not register any regions.
+
+* Changed: RequestList handling. It allows
+  now non-static request lists as it is the
+  default since AGENT++v3.5.11.
+
+* Fixed: Possible deadlock when a subagent
+  unregisters regions during committing a
+  SET request. 
+* Improved: Possibly redundant GETBULK 
+  requests sent to subagents when more than
+  one subagent is involved in a query and
+  if the involved subagents are responding
+  with different latency.
+* Improved: Example subagent2 with enhanced
+  AGENTPP-TEST-MIB.
+* Changed: Moved VC++ project files into
+  a separate package.
+
+
+AgentX++ v1.4.6b (AGENT++v3.5.10 or later)
+==========================================
+
+* Fixed: Memory fault when receiving a 
+  socket error other than a disconnect (i.e.
+  EINTR) while receiving AgentX PDUs.
+
+* Improved: Master agent: Processing speed
+  for GETBULK/GETNEXT requests drastically
+  improved, in particular if subagents
+  registered shared tables with consecutive.
+* Fixed: Master agent incorrectly trimmed
+  responses for GETBULK requests if more
+  than one object was requested by a PDU.
+  Although the returned SNMP response PDU
+  was correct, the performance was not best
+  possible.
+
+* Changed: SubAgentXMib::notify now returns
+  an int to match the NotificationSender
+  interface introduced by AGENT++v3.5.10.
+* Fixed: Possible seg.fault due to broken
+  logging code when sending a notification
+  from a subagent with no variable bindings.
+
+AgentX++ v1.4.5 (AGENT++v3.5.8a or later)
+=========================================
+
+* Changed: The AGENTX-MIB implementation of
+  AgentX++ now uses the transport domain
+  identifiers as defined in RFC3419 
+  (TRANSPORT-ADDRESS-MIB) instead of those
+  defined in AGENTPP-AGENTX-MIB.
+
+AgentX++ v1.4.4 (AGENT++v3.5.8 or later)
+========================================
+
+* Fixed: Possible close of subagent connection 
+  on heavy message load (agentx.cpp).
+  (Revisited)
+* Changed: v3MP initialization in master.cpp
+
+AgentX++ v1.4.3b (AGENT++v3.5.7b or later)
+==========================================
+
+* Fixed: DLL support for VC++ did not allow
+  static linking.
+
+* Fixed: Possible close of subagent connection 
+  on heavy message load (agentx.cpp). 
+* Added: VC++.NET project files and DLL support.
+* Added: AgenPro 2 agent template directories
+  (agentX++/agen/*).
+
+* Fixed: Memory leak caused by a bug in 
+  class Thread of AGENT++ 3.5.6d or earlier
+  when subagent connections have been
+  terminated.
+* Fixed: Possible dead lock when closing
+  a connection via AGENTX-MIB while this
+  connection is also closed by the subagent.
+
+AgentX++ v1.4.2f (AGENT++v3.5.5a or later)
+==========================================
+
+* Fixed: Master agent did not close sockets
+  properly when subagent terminated.
+  (Added close(peer->sd) in 
+  AgentXCloseTask::run() of agentx_master.cpp)
+
+AgentX++ v1.4.2d (AGENT++v3.5.5a or later)
+==========================================
+
+* Fixed: AgentXSlave::axSlaveSocket was
+  not properly initialized.
+* Fixed: "class" keyword added for friend
+  declarations in agentx_master.h
+
+AgentX++ v1.4.2c (AGENT++v3.5.5a or later)
+==========================================
+
+* Fixed: Some mismatched array delete 
+  operations (was delete, should be 
+  delete[]) in agentx_pdu.cpp and 
+  agentx.cpp
+
+AgentX++ v1.4.2b (AGENT++v3.5.4 or later)
+=========================================
+
+* Changed: AgentXRequest::get_oid to const.
+* Updated: Changed examples according to
+  new logging in AGENT++v3.5.4.
+
+AgentX++ v1.4.2a (AGENT++v3.5.3 or later)
+=========================================
+
+* Fixed: if_mib.cpp contained superflous
+  synchroniztion which caused dead locks
+  on Linux when used in subagent2 example. 
+
+AgentX++ v1.4.2 (AGENT++v3.5.3 or later)
+========================================
+
+* Fixed: Possible free memory access when
+  processing SET request.
+* Fixed: Possible deadlock when master
+  agent closes connection while SET 
+  requests are being processed.
+* Fixed: Sub agent crashes on WIN32 
+  systems due to inappropriate locking.
+  (Fixed by AGENT++v3.5.3 thread 
+  implementation)
+
+AgentX++ v1.4.1b (AGENT++v3.5d or later)
+========================================
+
+* Fixed: Context support for SNMPv1/v2c
+  via SNMP-COMMUNITY-MIB.
+
+* Fixed: Compilation errors when compiling
+  without _SNMPv3 defined. 
+* Fixed: Registering two identical regions
+  in two different contexts (_SNMPv3 only) 
+  was not possible, whereas registering
+  overlapping regions was.
+
+AgentX++ v1.4.1 (AGENT++v3.5d or later)
+=======================================
+
+* Added: MasterAgentXMib::set_auto_context
+  This method can be used to automatically
+  create a context, including the 
+  corresponding VACM context, when a 
+  subagent registers a region for a yet 
+  unknown context.
+* Improved: Examples.
+
+AgentX++ v1.4i (AGENT++v3.5d or later)
+======================================
+
+* Improved: The master agent example did
+  not implement some mandatory MIB objects
+  from the SNMPv3 framework.
+* Improved: The example master agent did
+  not have an access entry for MD5 user
+  and the default context.
+* Fixed: Timing problem when registering
+  shared table rows. A new row may not
+  have been added before 
+  registration_success is called for that
+  table.
+
+AgentX++ v1.4f (AGENT++v3.5d or later)
+======================================
+
+* Fixed: Possible crash of master when 
+  processing a SET request with an NET-SNMP
+  subagent.
+
+* Fixed: Possible crash of AgentX++ master
+  agent when responding to GETBULK requests.
+* Added: Some assertions that makes the
+  AgentX++ master agent invulnerable to out
+  of search range AgentX BULK responses or
+  BULK responses that have more than max.
+  repetitions. 
+
+AgentX++ v1.4d (AGENT++v3.5c or later)
+======================================
+
+* Fixed: Possible deadlock when an AgentX++
+  subagent registered many nodes at startup.
+
+AgentX++ v1.4c (AGENT++v3.5c or later)
+======================================
+
+* Fixed: Possible crash when unregistering 
+  subagent that does not send close PDU or
+  does not wait for its response.
+* Fixed: Possible deadlock when subagent is
+  unregistered while procesing SET requests.
+* Fixed: Master agent crashed when processing
+  GETBULK requests on multiple subagents.
+* Fixed: Missing AgentX-MIB object
+  agentxRegistrationTableLastChange.
+* Fixed: Decoding errors with WORDS_BIGENDIAN
+  defined.
+* Added: WORDS_BIGENDIAN in Solaris makefiles.
+* Fixed: Maximum repetitions in GETBULK Agentx
+  requests were not set correctly when 
+  MAX_AGENTX_REPETITIONS < MAX_VBS.
+
+AgentX++ v1.4 (AGENT++v3.5 or later)
+====================================
+
+* Fixed: Select() error in master agent.
+* Added: Timeout value for subagent session
+  can now be easier set through overriding
+  the new SubAgentXMib::create_session() method.
+* Added: Timeout values for region registration.
+  In AGENT++'s v3.5 MibGroup a timeout value
+  can be set which is used by AgentX++ to set
+  a non-default region timeout. Such a timeout
+  can be set for AgentXSharedTables too.  
+* Added: AgentX++ now uses the AGENT++v3.5 thread
+  pool for processing AgentX requests.
+
+AgentX++ v1.3.2 (AGENT++v3.4.7 or later)
+=======================================
+
+* Fixed: When a subagent was terminated without
+  sending a CLOSE PDU while a GETNEXT or GETBULK
+  was running on that subagent a dead lock in the
+  AgentX++ master could have occured. 
+* Added: AGENTPP-NOTIFYTEST-MIB implementation for
+  one of the AgentX++ subagent examples.
+* Fixed: The Opaque type was not transparently 
+  returned by master agent (instead it was returned
+  as OCTET STRING).
+
+
+AgentX++ v1.3.1 (AGENT++v3.4.7 or later)
+=======================================
+
+* Fixed: Master agent now sends UNDO SET request to
+  the subagents if a COMMIT timed out. 
+
+* Fixed: agentx.cpp: Usage of axTCPPort. Now the
+  master agent's TCP port can be set to a different
+  port than the default 705.
+* Fixed: agentx_queue.cpp: AgentXQueue::pending()
+  could have caused an endless loop in master agent.
+* Fixed: When running more than one SET/GETBULK
+  request concurrently a deadlock could have been
+  caused in the master agent.
+
+* Fixed: AgentXSharedTable changed according to 
+  table optimization in AGENT++v3.4.7
+* Fixed: Implementing a reconnection algorithm for
+  subagents was not feasible without changing the 
+  API itself.
+* Fixed: Master agent crashed when subagent did not
+  respond to a request and logging was enabled.
+* Fixed: When a COMMIT SET request is not answered
+  within the corresponding region/session timeout
+  the (any) master will not send a CLEANUP SET request.
+  But that is needed in the AgentX++ subagent in order
+  to release locks and free resources allocates for 
+  that SET request. The subagent now detects such
+  situations. When a master agent does not send a
+  CLEAN UP within the AgentX default timeout (5 seconds)
+  after the subagent has sent its response to the 
+  COMMIT SET then the subagent will call the 
+  cleanup_set_request of the involved MIB entries,
+  release all locks, and remove the request from the 
+  queue.
+* Fixed: (agentx_master.cpp:1239) Memory leak in master 
+  agent when processing SET requests. 
+
+
+AgentX++ v1.2 (AGENT++v3.4.6)
+=============================
+
+* Fixed: Handling of SET requests in subagents has been
+  changed to conform with AGENT++v3.4.6 or later locking
+  mechanism for SET requests. Thus, AgentX++v1.2 can only
+  be used with AGENT++v3.4.6 or later.
+
+
+AgentX++ v1.1
+=============
+
+[2001-04-16]
+
+* Added: If directory for unix domain sockets is not 
+  existing, it will be created.
+* Added: Removing of unix domain sockets (unlinking)
+  when master or subagent is shut down.
+
+* New Makefiles in order to support SNMP++v3.1.
+* Fixed: Compilation problems with _NO_LOGGING defined in
+  AGENT++.
+
+
+AgentX++ v1.0
+=============
+
+[2001-03-21]:
+
+* Fixed: The MasterAgentXMib did not save its configuration
+  when deleted.
+
+[2001-03-14]:
+
+* Fixed: The AgentX version and session timeout values
+  for the agentxSessionEntry were mixed up.
+* Fixed: In heavy load situations where many 
+  notifications are generated by a subagent while many 
+  SNMP requests for that subagent are processed by the
+  master agent dead lock situations could occur, because
+  filled socket buffers block sending out request, which
+  itself blocked receiving requests because of the 
+  socket locking implemented in class AgentX. This
+  locking is now disabled because all supported OS
+  (Linux, Solaris, WinNT/2000) provide thread-safe access
+  to sockets. If you are porting AgentX++ to a OS where
+  sequential access is needed, then 
+  #define LOCK_AGENTX_SOCKETS 
+  in agentx.h
+* Improved: Shutdown behavior of the subagent when
+  connection is closed by the master agent.
+
+[2001-02-28]:
+
+* Fixed: AgentX PDUs could not be encoded with network
+  byte order.
+* Fixed: Compiling issues with gcc on Solaris 
+  (WORDS_BIGENDIAN defined).
+* Improved: The subagent examples now include an 
+  interfaces group example implementation for Linux
+  that shows how shared tables can be implemented on
+  basis of AgentGen generated sources.
+
+[2001-01-25]:
+
+* Fixed: (agentx_master.cpp): Indexes allocated by a
+  sessions were not removed when the session has been
+  closed by a reason other than a session timeout.
+
+[2000-11-26]:
+
+* Fixed: (agentx_threads.cpp): Did not delete critical
+  section when destroying AgentXSynchronized instance.
+
+[2000-10-25]:
+
+* Fixed: agentx_master.cpp: Mib::finalize:
+  SNMPv1 GET requests where at least one sub-request
+  returns a noSuchObject error were not answered.
+
+* Added: (examples/subagent/if_mib.cpp):
+  The subagent examples now fill the interfaces rows
+  with default values.
+
+ 
+
+

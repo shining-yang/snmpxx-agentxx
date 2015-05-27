@@ -1,0 +1,55 @@
+
+AGENT++ V4.x README
+===================
+
+Included within this package can be found the source code and examples
+for AGENT++ 4.x for Linux, Solaris, Windows XP/7/8, Mac OS X, cygwin,
+and many other operating systems (included embedded).
+The following represents the directories which are included within the
+compressed tar file and their contents.
+
+For more details on the API, please refer to the API specification.
+
+This library requires SNMP++v3.3 or later which can be obtained from
+http://www.agentpp.com. SNMP++ up to 2.8 was designed by Peter Mellquist
+(Hewlett Packard Co.) and was available from
+http://rosegarden.external.hp.com/snmp++. This link no longer works
+because HP discontinued SNMP++. You can download the patched version 2.8a
+still from http://www.agentpp.com/snmp++v2.8a.tar.gz.
+
+====================================================================
+
+USAGE:
+
+Note: If you are using autoconf, you can set the following as parameters
+to the configure script. 
+
+The AGENT++ lib (libagent++.[so|a]) should be compiled with 
+
+-D_THREADS 
+
+to enable the use of pthreads (multi-threading). This flag is defined
+in agent++/include/agent++.h. You can undef it in order to build
+a single threaded agent. Always include agent++.h in all your
+source files to make sure that the lib and your code use the same
+settings.
+
+You only need to include "mib.h" to use the basic features of
+AGENT++. If you want to use the logging mechanism of AGENT++ you have
+to include "log.h" additionally. You can set the filter of the default
+log by
+
+	DefaultLog::log->set_filter(<logname>_LOG_IND, <level>);
+
+and disable the logging at all by using the compiler switch -D_NO_LOGGING
+which is recommended for best agent performance.
+
+
+--
+Frank Fock
+http://www.agentpp.com
+
+
+
+
+

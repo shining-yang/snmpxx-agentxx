@@ -1,0 +1,36 @@
+
+README autoconf
+===============
+
+To use autoconf with AgentX++, execute the following 
+commands in the "agentX++" directory:
+
+autoreconf -i
+./configure
+make
+
+If "autoreconf" fails or prints warnings about newer *.m4 files
+you may try to update the provided m4 scripts in the build-aux 
+directory with:
+
+autoreconf -i --force
+
+The autoreconf process needs at least the following tools/libs:
+
+autoconf
+libtoolize
+pkgconfig
+openssl-devel | libdes | libtomcrypt  (required for SNMPv3 support)
+
+
+The Makfile.<os-name> and common.mk files are no longer 
+maintained but provided for reference for a minimal setup 
+to ease porting AgentX++ to other platforms.
+
+Autoconf & AgenPro Templates
+----------------------------
+
+If you have changed the module setup or compiling with the options
+--with-agenpro-master or --with-agenpro-subagent for the first time
+then you have to rerun "autoconf -i" in order to properly update the
+Makefiles.

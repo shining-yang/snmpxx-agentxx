@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+modules=@WITH_MODULES@
+
+Name: agent++
+Version: @VERSION@
+Description: Multithreaded SNMP v1/2c/3 Agent API for SNMP++ written in C++
+Requires:
+Libs: -L${libdir} -lsnmp++ -lagent++
+Libs.private: @LIBS@ @LINKFLAGS@
+Cflags: -I${includedir} @INC_SNMP@
