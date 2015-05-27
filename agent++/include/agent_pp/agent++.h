@@ -1,0 +1,239 @@
+/*_############################################################################
+  _## 
+  _##  AGENT++ 4.0 - agent++.h.in  
+  _## 
+  _##  Copyright (C) 2000-2013  Frank Fock and Jochen Katz (agentpp.com)
+  _##  
+  _##  Licensed under the Apache License, Version 2.0 (the "License");
+  _##  you may not use this file except in compliance with the License.
+  _##  You may obtain a copy of the License at
+  _##  
+  _##      http://www.apache.org/licenses/LICENSE-2.0
+  _##  
+  _##  Unless required by applicable law or agreed to in writing, software
+  _##  distributed under the License is distributed on an "AS IS" BASIS,
+  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  _##  See the License for the specific language governing permissions and
+  _##  limitations under the License.
+  _##  
+  _##########################################################################*/
+
+#ifndef _agentpp_h_
+#define _agentpp_h_
+
+#define AGENTPP_VERSION_STRING "4.0.4"
+#define AGENTPP_VERSION 4
+#define AGENTPP_RELEASE 0
+#define AGENTPP_PATCHLEVEL 4
+
+// Defines the absolute upper limit for GETBULK repetitions an agent
+// will process. 0 or less disables an upper limit. 
+// Setting a limit can improve the responsiveness of an agent if
+// there are slow instrumented objects or AgentX subrequests involved.
+// If that is the case, the upper limit should be 25 or less.
+#define AGENTPP_MAX_GETBULK_REPETITIONS 0
+
+#include <libagent.h>
+
+// system dependend witches
+#ifndef NO_NANOSLEEP
+#define nanosleep nanosleep
+#endif
+
+// Agent++ configuration options
+//
+// (Note that Agent++ and SNMP++ should be built with the same settings!)
+
+// define _NO_LOGGING in snmp++/include/config_snmp_pp.h if you do not
+// want any logging output (increases performance drastically and
+// minimizes memory consumption)
+
+// define _NO_THREADS in snmp++/include/config_snmp_pp.h if you do not
+// want thread support
+
+// define _NO_SNMPv3 in snmp++/include/config_snmp_pp.h if you do not
+// want v3 support
+
+// snmp_pp.h includes config_snmp_pp.h, which checks whether _SNMPv3 and
+// thread support are defined
+#include <snmp_pp/snmp_pp.h>
+
+
+#if 1
+#define _USE_PROXY
+#else
+#undef _USE_PROXY
+#endif
+
+// define _PROXY_FORWARDER for v1/v2c/v3 proxy agents
+#if 1
+#define _PROXY_FORWARDER
+#else
+#undef _PROXY_FORWARDER
+#endif
+
+#ifndef AGENTPP_OPAQUE_PTHREAD_T
+#define AGENTPP_OPAQUE_PTHREAD_T int
+#endif
+
+#include <snmp_pp/smi.h>
+
+#ifndef GENERIC_CLASS_SUCCESS
+#define	GENERIC_CLASS_SUCCESS		0
+#endif
+#ifndef GENERIC_CLASS_ERROR
+#define	GENERIC_CLASS_ERROR		1
+#endif
+
+#ifndef GENERIC_CLASS_TYPE_MISMATCH
+#define GENERIC_CLASS_TYPE_MISMATCH	-1
+#endif
+
+#ifndef TRUE
+#define TRUE 1
+#endif
+
+#ifndef FALSE
+#define FALSE 0
+#endif
+
+#if 0
+#ifdef bool
+#undef bool
+#endif
+#define bool int
+#ifdef true
+#undef true
+#endif
+#define true TRUE
+#ifdef false
+#undef false
+#endif
+#define false FALSE
+#endif
+
+#if 1
+#define AGENTPP_NAMESPACE
+#else
+#undef AGENTPP_NAMESPACE
+#endif
+
+// internal "snmp" pdu types, used for internal mib updates
+// update: update one or more managed objects
+//         NOTE: if the target object is a table object and
+//               if the target object does not exist an new row is created
+// remove: remove one or more managed objects
+//         NOTE: if the target object is a table object 
+//               the complete row is removed
+
+#define MIB_UPDATE		(aSN_UNIVERSAL | aSN_CONSTRUCTOR | 0x0A )
+#define MIB_REMOVE	       	(aSN_UNIVERSAL | aSN_CONSTRUCTOR | 0x0B )
+
+typedef enum { READING, WRITING } access_types;
+
+#ifndef AGENTPP_DECL
+	#if defined (WIN32) && defined (AGENT_PP_DLL)
+		#ifdef AGENT_PP_EXPORTS
+			#define AGENTPP_DECL __declspec(dllexport)
+			#define AGENTPP_DECL_TEMPL
+			#pragma warning (disable : 4018)	// signed/unsigned mismatch when exporting templates
+		#else
+			#define AGENTPP_DECL __declspec(dllimport)
+			#define AGENTPP_DECL_TEMPL extern
+			#pragma warning (disable : 4231)	// disable warnings on extern before template instantiation
+		#endif
+	#else
+		#define AGENTPP_DECL
+// Seems that a eplicit extern declaration is needed on some 
+// systems. If you encounter linking problems you may uncomment
+// the following:
+//#ifdef WIN32 
+		#define AGENTPP_DECL_TEMPL
+//#else
+//		#define AGENTPP_DECL_TEMPL extern
+//#endif
+	#endif
+#endif
+
+#ifdef WIN32
+#define WIN32_LEAN_AND_MEAN
+// already included by config_snmp_pp.h: #include <winsock.h>
+#include <time.h>
+#include <process.h>
+#endif
+
+// Options about program code alternatives
+
+// undef this if you want to use OrderedList instead OrderedArray
+#define USE_ARRAY_TEMPLATE
+
+// Define STATIC_REQUEST_LIST if you need a static RequestList in
+// Mib.
+#if defined(_USE_PROXY) && !defined(_PROXY_FORWARDER)
+// Old proxy implementation requires STATIC_REQUEST_LIST
+#define STATIC_REQUEST_LIST
+#endif
+
+// ThreadPool may not work on any system so disable it if you encounter
+// problems
+#ifdef _THREADS
+#define AGENTPP_USE_THREAD_POOL
+
+// Use NO_FAST_MUTEXES on systems that do not allow a thread to unlock
+// a mutex it does not own. This setting affects set requests only.
+// This has to be defined on WIN32 systems!
+#ifdef WIN32
+#define NO_FAST_MUTEXES
+#endif
+// The Single UNIX ® Specification, Version 2 says:
+// If a thread attempts to unlock a mutex that it has not locked or [...], undefined behaviour results.
+#ifdef HAVE_PTHREAD
+#define NO_FAST_MUTEXES
+#endif
+#endif //_THREADS
+
+// SnmpRequest and SnmpRequestV3 use temporary Snmpx objects for sending
+// traps, informs and requests. The default is to create these objects
+// with listen address 0.0.0.0. If you define this, they are created
+// using the listen address of the RequestList.
+#define USE_LISTEN_ADDRESS_FOR_SENDING_TRAPS
+
+#ifdef AGENTPP_NAMESPACE
+#define NS_AGENT Agentpp::
+#else
+#define NS_AGENT
+#endif
+
+#ifndef MAXUINT32
+#define MAXUINT32 4294967295u
+#endif
+
+#define DEFAULT_ENGINE_BOOTS_FILE "snmpv3_boot_counter"
+
+#if defined(__APPLE__) || defined(__clang__)
+// g++ 4.0.1 of MacOS X 10.5.6 does not like the template declarations
+#define AGENTPP_DECL_TEMPL_OIDLIST_MIBSTATICENTRY
+#define AGENTPP_DECL_TEMPL_LIST_MIBENTRY
+#define AGENTPP_DECL_TEMPL_OIDLIST_MIBENTRY
+#define AGENTPP_DECL_TEMPL_OIDLIST_MIBGROUP
+#define AGENTPP_DECL_TEMPL_LIST_MIBENTRY
+#define AGENTPP_DECL_TEMPL_LIST_MIBLEAF
+#define AGENTPP_DECL_TEMPL_ORDEREDLIST_MIBLEAF
+#define AGENTPP_DECL_TEMPL_ORDEREDARRAY_MIBLEAF
+#define AGENTPP_DECL_TEMPL_LIST_MIBTABLE
+#define AGENTPP_DECL_TEMPL_LIST_MIBTABLEROW
+#define AGENTPP_DECL_TEMPL_LIST_MIBTABLEVOTER
+#define AGENTPP_DECL_TEMPL_OIDLIST_MIBTABLEROW
+#define AGENTPP_DECL_TEMPL_ORDEREDLIST_MIBTABLEROW
+#define AGENTPP_DECL_TEMPL_ARRAY_MIBCONFIGFORMAT
+#define AGENTPP_DECL_TEMPL_OIDLIST_MIBCONTEXT
+#define AGENTPP_DECL_TEMPL_OIDLIST_PROXYFORWARDER
+#define AGENTPP_DECL_TEMPL_ARRAY_MIBENTRY
+#define AGENTPP_DECL_TEMPL_ARRAY_THREAD
+#define AGENTPP_DECL_TEMPL_ARRAY_TASKMANAGER
+#define AGENTPP_DECL_TEMPL_LIST_RUNNABLE
+#define AGENTPP_DECL_TEMPL_LIST_LOCKREQUEST
+#define AGENTPP_DECL_TEMPL_LIST_VIEWNAMEINDEX
+#endif
+
+#endif // _agentpp_h_

@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AgentX++", "AgentX++\AgentX++.vcxproj", "{719D11D1-63C0-48D2-B1F7-664DD622BD59}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MasterAgent", "MasterAgent\MasterAgent.vcxproj", "{677757CE-0A8B-4EC9-86F7-BCD2DF7B8513}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{719D11D1-63C0-48D2-B1F7-664DD622BD59}.Debug|Win32.ActiveCfg = Debug|Win32
+		{719D11D1-63C0-48D2-B1F7-664DD622BD59}.Debug|Win32.Build.0 = Debug|Win32
+		{719D11D1-63C0-48D2-B1F7-664DD622BD59}.Release|Win32.ActiveCfg = Release|Win32
+		{719D11D1-63C0-48D2-B1F7-664DD622BD59}.Release|Win32.Build.0 = Release|Win32
+		{677757CE-0A8B-4EC9-86F7-BCD2DF7B8513}.Debug|Win32.ActiveCfg = Debug|Win32
+		{677757CE-0A8B-4EC9-86F7-BCD2DF7B8513}.Debug|Win32.Build.0 = Debug|Win32
+		{677757CE-0A8B-4EC9-86F7-BCD2DF7B8513}.Release|Win32.ActiveCfg = Release|Win32
+		{677757CE-0A8B-4EC9-86F7-BCD2DF7B8513}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

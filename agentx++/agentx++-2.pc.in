@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+modules=@WITH_MODULES@
+
+Name: agentX++
+Version: @VERSION@
+Description: Multithreaded AgentX API for AGENT++/SNMP++ written in C++
+Requires:
+Libs: -L${libdir} -lsnnp++ -lagent++ -lagentx++
+Libs.private: @LIBS@
+Cflags: -I${includedir} @INC_SNMP@ @INC_AGENT@

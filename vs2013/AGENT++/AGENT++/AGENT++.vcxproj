@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4404AF59-7550-4E20-AA0B-8CCDB22BC0E7}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>AGENT</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\include;$(ProjectDir)\..\..\SNMP++\include;$(ProjectDir)\..\..\..\agent++\include;$(ProjectDir)\..\..\..\snmp++\include;$(ProjectDir)\..\..\..\libdes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4522;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <AdditionalOptions>
+      </AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\include;$(ProjectDir)\..\..\SNMP++\include;$(ProjectDir)\..\..\..\agent++\include;$(ProjectDir)\..\..\..\snmp++\include;$(ProjectDir)\..\..\..\libdes</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\agent++.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\agentpp_config_mib.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\agentpp_simulation_mib.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\avl_map.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\entry.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\List.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\map.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\mib.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\mib_avl_map.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\mib_complex_entry.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\mib_context.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\mib_entry.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\mib_map.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\mib_policy.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\mib_proxy.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\notification_log_mib.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\notification_originator.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\oidx_defs.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\oidx_ptr.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\proxy_forwarder.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\request.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\sim_mib.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\snmp_community_mib.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\snmp_counters.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\snmp_group.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\snmp_notification_mib.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\snmp_pp_ext.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\snmp_proxy_mib.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\snmp_request.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\snmp_target_mib.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\snmp_textual_conventions.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\system_group.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\threads.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\tools.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\v3_mib.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\vacm.h" />
+    <ClInclude Include="..\..\..\agent++\include\agent_pp\WIN32DLL.h" />
+    <ClInclude Include="..\include\config.h" />
+    <ClInclude Include="..\include\libagent.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\agent++\src\agentpp_config_mib.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\agentpp_simulation_mib.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\avl_map.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\map.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\mib.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\mib_avl_map.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\mib_complex_entry.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\mib_context.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\mib_entry.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\mib_map.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\mib_policy.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\mib_proxy.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\notification_log_mib.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\notification_originator.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\proxy_forwarder.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\request.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\sim_mib.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\snmp_community_mib.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\snmp_counters.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\snmp_group.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\snmp_notification_mib.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\snmp_pp_ext.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\snmp_proxy_mib.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\snmp_request.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\snmp_target_mib.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\snmp_textual_conventions.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\system_group.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\threads.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\tools.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\v3_mib.cpp" />
+    <ClCompile Include="..\..\..\agent++\src\vacm.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,34 @@
+README WIN32
+============
+
+The Visual Studio 2013 project files require that the 
+libdes, SNMP++, AGENT++, and/or AgentX++ sources
+are extracted in the same directory as the Visual Studio
+project files. The directory structure should then look
+like (note: there must not be any version numbers in the
+directory names):
+
+common-root-dir
+ |-- libdes
+ |-- snmp++
+ |-- agent++
+ |-- agentx++
+ |-- vs2013
+
+Make sure, that you delete the file config_snmp_pp.h from
+the snmp++\include\snmp_pp directory. Otherwise, the linked
+programs crash on execution, because the different projects
+might have used different versions of the config_snmp_pp.h
+file.
+
+The file with the right (default) settings for the WIN32 platform
+is located in vs2013\SNMP++\include\snmp_pp and included from
+there by the VS project files.
+
+To build the libraries, use this order:
+
+1. libdes (or openssh)
+2. SNMP++
+3. AGENT++
+4. AgentX++
+

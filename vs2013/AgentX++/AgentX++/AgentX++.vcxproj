@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{719D11D1-63C0-48D2-B1F7-664DD622BD59}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>AgentX</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\include;$(ProjectDir)\..\..\SNMP++\include;$(ProjectDir)\..\..\AGENT++\include;$(ProjectDir)\..\..\..\snmp++\include;$(ProjectDir)\..\..\..\libdes;$(ProjectDir)\..\..\..\agent++\include;$(ProjectDir)\..\..\..\agentX++\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4522</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\include;$(ProjectDir)\..\..\SNMP++\include;$(ProjectDir)\..\..\AGENT++\include;$(ProjectDir)\..\..\..\snmp++\include;$(ProjectDir)\..\..\..\libdes;$(ProjectDir)\..\..\..\agent++\include;$(ProjectDir)\..\..\..\agentX++\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\agentX++\include\agentx_pp\agentpp_agentx_mib.h" />
+    <ClInclude Include="..\..\..\agentX++\include\agentx_pp\agentx++.h" />
+    <ClInclude Include="..\..\..\agentX++\include\agentx_pp\agentx.h" />
+    <ClInclude Include="..\..\..\agentX++\include\agentx_pp\agentx_def.h" />
+    <ClInclude Include="..\..\..\agentX++\include\agentx_pp\agentx_index.h" />
+    <ClInclude Include="..\..\..\agentX++\include\agentx_pp\agentx_master.h" />
+    <ClInclude Include="..\..\..\agentX++\include\agentx_pp\agentx_mib.h" />
+    <ClInclude Include="..\..\..\agentX++\include\agentx_pp\agentx_node.h" />
+    <ClInclude Include="..\..\..\agentX++\include\agentx_pp\agentx_pdu.h" />
+    <ClInclude Include="..\..\..\agentX++\include\agentx_pp\agentx_peer.h" />
+    <ClInclude Include="..\..\..\agentX++\include\agentx_pp\agentx_queue.h" />
+    <ClInclude Include="..\..\..\agentX++\include\agentx_pp\agentx_reg.h" />
+    <ClInclude Include="..\..\..\agentX++\include\agentx_pp\agentx_request.h" />
+    <ClInclude Include="..\..\..\agentX++\include\agentx_pp\agentx_session.h" />
+    <ClInclude Include="..\..\..\agentX++\include\agentx_pp\agentx_subagent.h" />
+    <ClInclude Include="..\..\..\agentX++\include\agentx_pp\agentx_threads.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\agentX++\src\agentpp_agentx_mib.cpp" />
+    <ClCompile Include="..\..\..\agentX++\src\agentx.cpp" />
+    <ClCompile Include="..\..\..\agentX++\src\agentx_index.cpp" />
+    <ClCompile Include="..\..\..\agentX++\src\agentx_master.cpp" />
+    <ClCompile Include="..\..\..\agentX++\src\agentx_mib.cpp" />
+    <ClCompile Include="..\..\..\agentX++\src\agentx_node.cpp" />
+    <ClCompile Include="..\..\..\agentX++\src\agentx_pdu.cpp" />
+    <ClCompile Include="..\..\..\agentX++\src\agentx_peer.cpp" />
+    <ClCompile Include="..\..\..\agentX++\src\agentx_queue.cpp" />
+    <ClCompile Include="..\..\..\agentX++\src\agentx_reg.cpp" />
+    <ClCompile Include="..\..\..\agentX++\src\agentx_request.cpp" />
+    <ClCompile Include="..\..\..\agentX++\src\agentx_session.cpp" />
+    <ClCompile Include="..\..\..\agentX++\src\agentx_subagent.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

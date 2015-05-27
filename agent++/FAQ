@@ -1,0 +1,178 @@
+
+
+AGENT++/AgentGen FAQ
+====================
+
+
+Q: I have downloaded SNMP++/AGENT++ from http://www.agentpp.com
+   but I have problems to unzip/untar it.
+
+A: Some browser do not recognize the extension "tar.gz". In order
+   properly unzip the downloaded files you have to manually rename
+   them to <filename>.tar.gz
+
+--
+Q: I have successfully compiled an AGENT++ example and run it. 
+   But when sending a request to the agent, the request always
+   times out.
+
+A: The example agents listen on port 4700 by default, whereas
+   the standard SNMP port is 161. Please specify port 4700
+   when sending request to the (unmodified) example agents.
+  
+--
+Q: Do you have any example code showing how to send a trap?
+
+A: Since AGENT++v3.5.10 notifications (and informs) should be
+   sent via Mib::notify, which supports notification sending 
+   via the NotificationOriginator class by default. When using
+   the AgentX++ subagent or Win32 subagent APIs, this method will
+   send notifications with the correspondig subagent protocol 
+   instead of using the NotificationOrigintor.
+
+   You can send a trap in AGENT++v3.5.10 or later for example by:
+
+	Vbx* vbs = 0;
+	coldStartOid coldOid;
+	Mib::notify(vbs, 0, coldOid, "", "");
+
+   Please see the v3 online docs for more information on the
+   NotificationOriginator class. The trap type (inform-request, trap,
+   or notification) and the destinations are set via the 
+   SNMP-NOTIFICATION-MIB and the SNMP-TARGET-MIB.
+
+--
+Q: I have build an agent with AGENT++/AgenPro for a MIB containing 
+   SNMP tables. When I want to get a value from a table the agent
+   returns "Not Available". The problem occurs only when accessing 
+   tables.
+
+A: Tables created via AgenPro are empty by default. You have to add 
+   rows to a table in order to be able to access any instances
+   within that table. 
+
+--
+Q: How can I add rows to a table.
+
+A: First you have to create a valid index for the row:
+   
+   For a table with an INDEX clause like "INDEX { ifIndex, portNo }"
+   this would be an index oid with two sub-identifiers for example
+
+   "36.4000"
+
+   In AGENT++v3.3 or later you can check an index for validity by
+   calling MibTable::is_index_valid(const Oidx&).
+
+   You then add a new row by
+
+   Oidx ind("36.4000");
+   if (!is_index_valid(ind)) printf("ERROR\n");
+   MibTableRow* r = myIfEntry::instance->add_row(ind);
+
+   You may then set the values of the new row by:
+
+   rTntIfEntry::instance->set_row(r,4000,25);
+
+--
+Q: I would like to implement a read-only table or static 
+   table, respectively. How can I realize it best?
+
+A: Use the MibStaticTable and MibStaticEntry classes from
+   mib_complex_entry.h. See the static_table example for
+   details. 
+
+--
+Q: I would like to update the cached values in my table
+   whenever a request for that table comes in. How can this 
+   be done?
+
+A: You should override the MibTable::update(Request*) method 
+   in order to update your table. It is called whenever a 
+   potential request for that table is processed. 
+
+--
+Q: How do I build the snmp++ and agent++ libraries using
+   MS Visual C++ 6.0?
+
+A: 1) Ensure that the include paths for snmp++ and agent++ 
+      is searched _before_ the standard VC include paths.
+      This because a wrong version of mib.h (and perhaps
+      more files) get included.
+
+   2) Compile using the Debug Multithread or just Multithread
+      swithces on! Remember to define the flags 
+      SNMP_PP_NATIVE_EXPORTS and AGENT_PP_NATIVE_EXPORTS.
+
+   3) Start compiling as a lib, _not_ as dll.
+
+   4) When having compiled the libs successfully, try
+      compiling one of the test-agents. There are several
+      things here you got to remember on setting up the 
+      project:
+
+      - Use same Multithread flag as for the libraries.
+      - Turn of incremental link.
+      - Ignore library: libcd.lig
+      - Input snmp++, rsaeuro, agent++ libraries, +
+        wsock32.lib.
+      - Define the SNMP_PP_NATIVE_EXPORTS and
+        AGENT_PP_NATIVE_EXPORTS flags
+--
+Q: I have succesfully compiled and linked my agent with 
+   VC++, but when it starts or when sending requests to 
+   the agent it crashes. Why?
+
+A: Please make sure that all your projects (i.e., SNMP++
+   AGENT++, etc.) are build with the same settings. 
+   Especially the /ML or /MT flag must be used 
+   consistently.
+   
+--
+Q: When I try to make AGENT++ I got an error from make:
+   "Do not know how to make "../include/*.h"
+
+A: Your make does not support pattern rules. Please
+   use GNU make or any other make utility that supports
+   pattern rules instead.
+
+--
+Q: There seems to be missing files (Modules.mk, 
+   module_includes.h, modules_init.h) in the agentgen 
+   subdirectories?
+
+A: These files are not missing. They will be generated
+   by AgenPro. See http://www.agentpp.com for more
+   information on code generation for AGENT++/AgentX++.
+
+--
+Q: How can I disable persistent storage for one or more
+   MIB objects of my agent?
+
+A: You may overwrite the MibEntry::is_presistent method
+   to return FALSE, or, even simpler, you could add the
+   MibEntry instance in question directly to the Mib
+   instance instead of adding it to a MibGroup (which
+   is then added to the MIB instance and then controls
+   the persistent storage).
+
+--
+Q: When running an AgenPro generated (simulation) agent
+   for some MIB modules persitent storage support fails
+   to save MIB module content to disk, why?
+
+A: AgenPro generates a MibGroup for each MIB module by
+   default. Each MibGroup has to have a unique OID as 
+   key. This key is determined by AgenPro as the root
+   OID of a MIB module. If there MIB modules overlap
+   this can cause the above described problem. To solve
+   it, assign unique key OIDs to the MibGroups or 
+   combine overlapping MibGroups. 
+
+
+You have questions not answered here? Then try to use the
+archive of the AGENT++ mailing list. 
+
+See http://www.agentpp.com for instructions on how the
+archive can be browsed.
+
